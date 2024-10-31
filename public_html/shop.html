@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop</title>
+  <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+  <div class="shop-container">
+    <aside class="category-sidebar">
+      <h3>Categories</h3>
+      <ul id="categoryList">
+        <!-- Categories populated dynamically -->
+      </ul>
+    </aside>
+
+    <main class="product-display">
+      <h2>Explore Our Collection</h2>
+      <div id="productGrid" class="product-grid">
+        <!-- Products will be displayed here dynamically -->
+      </div>
+    </main>
+  </div>
+  
+  <script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+  authDomain: "sonia-emporium-95984.firebaseapp.com",
+  projectId: "sonia-emporium-95984",
+  storageBucket: "sonia-emporium-95984.firebasestorage.app",
+  messagingSenderId: "582010973914",
+  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+  measurementId: "G-72TR5RZVBB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const categories = ["Luxury Dresses", "Resort Wear", "Haute Couture", "Bespoke Suits", "Luxury Accessories"];
+const categoryList = document.getElementById('categoryList');
+const productGrid = document.getElementById('productGrid');
+
+// Populate category sidebar
+categories.forEach(category => {
+  const li = document.createElement('li');
+  li.innerText = category;
+  li.onclick = () => loadProductsByCategory(category);
+  categoryList.appendChild(li);
+});
+
+// Load products by category
+async function loadProductsByCategory(category) {
+  productGrid.innerHTML = ""; // Clear existing products
+  const q = query(collection(db, "products"), where("category", "==", category));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    const product = doc.data();
+    const productCard = createProductCard(product);
+    productGrid.appendChild(productCard);
+  });
+}
+
+// Create product card
+function createProductCard(product) {
+  const card = document.createElement('div');
+  card.classList.add('product-card');
+  card.onclick = () => window.location.href = `product.html?id=${product.id}`;
+
+  card.innerHTML = `
+    <img src="${product.imageUrl}" alt="${product.name}">
+    <h4>${product.name}</h4>
+    <p>$${product.price}</p>
+  `;
+  return card;
+}
+
+// Load products for the first category by default
+loadProductsByCategory(categories[0]);
+
+  </script>
+</body>
+</html>
