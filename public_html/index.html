@@ -1,11 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxury Fashion - Home</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Global styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* Navigation Bar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #000;
+  color: #fff;
+}
+
+nav .logo {
+  font-size: 1.5em;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1em;
+}
+
+/* Hero Section */
+.hero-section {
+  background-image: url('hero-image.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-size: 3em;
+  margin: 0;
+}
+
+.hero-section p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.shop-now-btn {
+  background: #e7ab3c;
+  padding: 15px 30px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+/* Categories Section */
+.categories-section {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.categories-section h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.category {
+  width: 150px;
+  text-align: center;
+}
+
+.category img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Featured Products Section */
+.featured-products-section {
+  padding: 40px 20px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.featured-products-section h2 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.featured-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.product {
+  width: 200px;
+  text-align: center;
+}
+
+.product img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .categories, .featured-products {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">Luxury Fashion</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="profile.html">Account</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <h1>Welcome to Luxury Fashion</h1>
+    <p>Discover the finest in haute couture, bespoke suits, and accessories.</p>
+    <a href="shop.html" class="shop-now-btn">Shop Now</a>
+  </header>
+
+  <!-- Product Categories -->
+  <section class="categories-section">
+    <h2>Explore Our Collections</h2>
+    <div class="categories">
+      <div class="category">
+        <img src="luxury-dresses.jpg" alt="Luxury Dresses">
+        <h3>Luxury Dresses</h3>
+      </div>
+      <div class="category">
+        <img src="resort-wear.jpg" alt="Resort Wear">
+        <h3>Resort Wear</h3>
+      </div>
+      <div class="category">
+        <img src="haute-couture.jpg" alt="Haute Couture">
+        <h3>Haute Couture</h3>
+      </div>
+      <div class="category">
+        <img src="bespoke-suits.jpg" alt="Bespoke Suits">
+        <h3>Bespoke Suits</h3>
+      </div>
+      <div class="category">
+        <img src="luxury-accessories.jpg" alt="Luxury Accessories">
+        <h3>Luxury Accessories</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="featured-products-section">
+    <h2>Featured Products</h2>
+    <div class="featured-products">
+      <div class="product">
+        <img src="product1.jpg" alt="Product 1">
+        <h4>Silk Evening Gown</h4>
+        <p>$1,500</p>
+      </div>
+      <div class="product">
+        <img src="product2.jpg" alt="Product 2">
+        <h4>Tailored Suit</h4>
+        <p>$2,200</p>
+      </div>
+      <div class="product">
+        <img src="product3.jpg" alt="Product 3">
+        <h4>Leather Handbag</h4>
+        <p>$950</p>
+      </div>
+    </div>
+  </section>
+
+  <script></script>
+</body>
 </html>
+

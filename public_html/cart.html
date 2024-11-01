@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #1a1a1a;
+        line-height: 1.6;
+        background-color: #fdfbf8;
+    }
+
+    header {
+        background-color: #ffffff;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-sizing: border-box;
+    }
+
+    .logo h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav ul li a {
+        color: #1a1a1a;
+        text-decoration: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: #c9a77c;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    .btn:hover {
+        background-color: white;
+        color: #1a1a1a;
+    }
+
+    section {
+        padding: 80px 40px;
+    }
+
+    section h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .cart-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+        margin: 100px 40px;
+        padding-bottom: 40px;
+    }
+
+    .cart-items, .cart-summary {
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .cart-items h2, .cart-summary h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .cart-summary p {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .cart-summary #cart-total {
+        color: #c9a77c;
+    }
+
+    .cart-summary button {
+        width: 100%;
+        padding: 15px;
+        background-color: #c9a77c;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .cart-summary button:hover {
+        background-color: #b68e5b;
+    }
+
+    footer {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 60px 40px;
+    }
+
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+    }
+
+    .footer-section h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 2;
+    }
+
+    .accent-line {
+        width: 40px;
+        height: 1px;
+        background-color: #c9a77c;
+        margin: 20px auto;
+    }
+
+    @media (max-width: 768px) {
+        .cart-container {
+            grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <!--HEADER-->
+    <header>
+        <h1>SONIA EMPORIUM</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+                <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+            </ul>
+        </nav>
+    </header>
+
+  <!-- Cart Items Section -->
+  <section id="cartSection">
+    <h1>Your Shopping Cart</h1>
+    <div id="cartItemsList"></div>
+  </section>
+
+  <!-- Cart Summary Section -->
+  <section id="cartSummary">
+    <h2>Order Summary</h2>
+    <p id="subtotal">Subtotal: R0.00</p>
+    <p id="deliveryFee">Delivery Fee (10%): R0.00</p>
+    <h3 id="totalPrice">Total: R0.00</h3>
+    <button id="checkoutButton">Proceed to Checkout</button>
+  </section>
+
+  <script type="module" >
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+  authDomain: "sonia-emporium-95984.firebaseapp.com",
+  projectId: "sonia-emporium-95984",
+  messagingSenderId: "582010973914",
+  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+  measurementId: "G-72TR5RZVBB"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let cartItems = [];
+let subtotal = 0;
+
+// Elements for displaying cart details and summary
+const cartItemsList = document.getElementById('cartItemsList');
+const subtotalElem = document.getElementById('subtotal');
+const deliveryFeeElem = document.getElementById('deliveryFee');
+const totalPriceElem = document.getElementById('totalPrice');
+
+// Load Cart Items
+async function loadCartItems() {
+  cartItemsList.innerHTML = ''; // Clear existing items
+  subtotal = 0;
+
+  const querySnapshot = await getDocs(collection(db, "cart"));
+  cartItems = [];
+
+  querySnapshot.forEach((doc) => {
+    const item = { ...doc.data(), id: doc.id };
+    cartItems.push(item);
+    subtotal += item.price * (item.quantity || 1); // Add item price to subtotal
+  });
+
+  cartItems.forEach(item => {
+    const cartItemElem = createCartItemElement(item);
+    cartItemsList.appendChild(cartItemElem);
+  });
+
+  updateSummary();
+}
+
+// Create Cart Item Element
+function createCartItemElement(item) {
+  const cartItemElem = document.createElement('div');
+  cartItemElem.classList.add('cart-item');
+  
+  cartItemElem.innerHTML = `
+    <img src="${item.imageUrl || 'default-image.jpg'}" alt="${item.name}">
+    <div class="cart-item-details">
+      <h4>${item.name}</h4>
+      <p>Size: ${item.size}</p>
+      <p>$${item.price}</p>
+      <div class="quantity-toggle">
+        <button onclick="changeQuantity('${item.id}', -1)">-</button>
+        <span id="quantity-${item.id}">${item.quantity || 1}</span>
+        <button onclick="changeQuantity('${item.id}', 1)">+</button>
+      </div>
+    </div>
+    <button onclick="removeItem('${item.id}')">Remove</button>
+  `;
+  return cartItemElem;
+}
+
+// Update Summary (Subtotal, Delivery Fee, and Total)
+function updateSummary() {
+  const deliveryFee = subtotal * 0.1;
+  const total = subtotal + deliveryFee;
+
+  subtotalElem.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
+  deliveryFeeElem.textContent = `Delivery Fee (10%): $${deliveryFee.toFixed(2)}`;
+  totalPriceElem.textContent = `Total: $${total.toFixed(2)}`;
+}
+
+// Change Quantity of Cart Item
+window.changeQuantity = async (itemId, change) => {
+  const item = cartItems.find(item => item.id === itemId);
+  if (!item) return;
+
+  item.quantity = (item.quantity || 1) + change;
+  if (item.quantity < 1) item.quantity = 1; // Minimum quantity is 1
+
+  document.getElementById(`quantity-${itemId}`).textContent = item.quantity;
+
+  await updateDoc(doc(db, "cart", itemId), { quantity: item.quantity });
+  subtotal += item.price * change;
+  updateSummary();
+};
+
+// Remove Item from Cart
+window.removeItem = async (itemId) => {
+  await deleteDoc(doc(db, "cart", itemId));
+  cartItems = cartItems.filter(item => item.id !== itemId);
+
+  loadCartItems(); // Reload cart items
+};
+
+// Proceed to Checkout
+document.getElementById('checkoutButton').addEventListener('click', () => {
+  alert("Proceeding to checkout...");
+  // Additional checkout logic can be added here
+});
+
+// Initial load
+loadCartItems();
+
+  </script>
+</body>
+</html>

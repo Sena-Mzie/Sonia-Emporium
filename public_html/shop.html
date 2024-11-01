@@ -8,6 +8,20 @@
   
 </head>
 <body>
+  <!--HEADER-->
+  <header>
+    <h1>SONIA EMPORIUM</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+        </ul>
+    </nav>
+</header>
+
   <div class="shop-container">
     <aside class="category-sidebar">
       <h3>Categories</h3>
@@ -33,7 +47,6 @@ const firebaseConfig = {
   apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
   authDomain: "sonia-emporium-95984.firebaseapp.com",
   projectId: "sonia-emporium-95984",
-  storageBucket: "sonia-emporium-95984.appspot.com", // Ensure the bucket name is correct
   messagingSenderId: "582010973914",
   appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
   measurementId: "G-72TR5RZVBB"
@@ -59,7 +72,7 @@ categories.forEach(category => {
 // Load products by category
 async function loadProductsByCategory(category) {
   productGrid.innerHTML = ""; // Clear existing products
-  const q = query(collection(db, "products"), where("category", "==", category));
+  const q = query(collection(db, "product"), where("category", "==", category));
   const querySnapshot = await getDocs(q);
 
   for (const doc of querySnapshot.docs) {
@@ -86,7 +99,7 @@ function createProductCard(product, imageUrl) {
 
 // Load products for the first category by default
 loadProductsByCategory(categories[0]);
-
 </script>
+
 </body>
 </html>

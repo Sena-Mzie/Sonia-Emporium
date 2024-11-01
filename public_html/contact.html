@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Book an Appointment</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #1a1a1a;
+        line-height: 1.6;
+        background-color: #fdfbf8;
+    }
+    header {
+        background-color: #ffffff;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        box-sizing: border-box;
+    }
+    .logo h1 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 28px;
+        margin: 0;
+        letter-spacing: 2px;
+    }
+    nav ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    nav ul li a {
+        color: #1a1a1a;
+        text-decoration: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        transition: color 0.3s;
+    }
+    nav ul li a:hover {
+        color: #c9a77c;
+    }
+    .cart a {
+        color: #1a1a1a;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+    .btn:hover {
+        background-color: white;
+        color: #1a1a1a;
+    }
+    section {
+        padding: 80px 40px;
+    }
+    section h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 40px;
+    }h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+}
+    .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s;
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+    .btn:hover {
+        background-color: white;
+        color: #1a1a1a;
+    }
+.tagline {
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+}
+.about-text, .about-mission {
+    padding: 30px;
+    background-color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+}
+.feature-card {
+    background-color: white;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+.feature-card:hover {
+    transform: translateY(-10px);
+}
+.feature-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+}
+.accent-line {
+    width: 50px;
+    height: 2px;
+    background-color: #c9a77c;
+    margin: 2rem auto;
+}
+.cta-section {
+    text-align: center;
+    margin-top: 4rem;
+    padding: 4rem 0;
+    background-color: #1a1a1a;
+    color: white;
+}
+.cta-button {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #c9a77c;
+    color: white;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.cta-button:hover {
+    background-color: #b18a5c;
+}
+.luxury-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+}
+.luxury-detail {
+    text-align: center;
+    padding: 2rem;
+}
+.luxury-detail h3 {
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 1rem;
+}
+    footer {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 60px 40px;
+    }
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+    footer {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 60px 40px;
+    }
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+    .footer-section h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-section ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 2;
+    }
+    .accent-line {
+        width: 40px;
+        height: 1px;
+        background-color: #c9a77c;
+        margin: 20px auto;
+    }
+</style>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <h1>SONIA EMPORIUM</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+        </ul>
+    </nav>
+    <div class="cart">
+        <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart </a>
+    </div>
+</header>
+<br>
+
+<div class="container">
+<div class="about-content">
+    <div class="about-text">
+        <h2>Visit Our Salon</h2>
+        <div class="accent-line"></div>
+        <p>Monday - Saturday: 9am - 5pm<br>
+        Sunday: Closed for Private Events</p>
+        <p>For inquiries and appointments:<br>
+        Tel:  078 155 9552<br>
+        Email: concierge@soniaemporium.com</p>
+    </div>
+    <div class="about-mission">
+        <h2>Our Commitment</h2>
+        <div class="accent-line"></div>
+        <p>Sonia Emporium is committed to providing an unparalleled luxury shopping experience. We partner exclusively with designers who share our dedication to excellence, ensuring that each piece in our collection meets the highest standards of quality and craftsmanship.</p>
+    </div>
+</div>
+</div>
+
+  <section id="contactSection">
+    <h1>Book a Personalization Appointment</h1>
+    <form id="bookingForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required>
+
+      <label for="contact">Contact Details (Phone/Email):</label>
+      <input type="text" id="contact" required>
+
+      <label for="appointmentDate">Appointment Date:</label>
+      <input type="date" id="appointmentDate" required min="">
+
+      <label for="appointmentTime">Appointment Time:</label>
+      <input type="time" id="appointmentTime" required>
+
+      <button type="submit">Book Appointment</button>
+    </form>
+
+    <div id="bookingConfirmation"></div>
+  </section>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+  authDomain: "sonia-emporium-95984.firebaseapp.com",
+  projectId: "sonia-emporium-95984",
+  messagingSenderId: "582010973914",
+  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+  measurementId: "G-72TR5RZVBB"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const bookingForm = document.getElementById("bookingForm");
+const bookingConfirmation = document.getElementById("bookingConfirmation");
+
+// Set the minimum date to today
+const today = new Date().toISOString().split("T")[0];
+document.getElementById("appointmentDate").setAttribute("min", today);
+
+// Handle booking submission
+bookingForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const contact = document.getElementById("contact").value;
+  const appointmentDate = document.getElementById("appointmentDate").value;
+  const appointmentTime = document.getElementById("appointmentTime").value;
+
+  if (!name || !contact || !appointmentDate || !appointmentTime) {
+    bookingConfirmation.textContent = "Please complete all fields.";
+    bookingConfirmation.style.color = "red";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "booking"), {
+      name,
+      contact,
+      appointmentDate,
+      appointmentTime,
+      createdAt: new Date().toISOString()
+    });
+
+    bookingConfirmation.textContent = "Your appointment has been successfully booked!";
+    bookingConfirmation.style.color = "green";
+    bookingForm.reset();
+  } catch (error) {
+    console.error("Error booking appointment:", error);
+    bookingConfirmation.textContent = "An error occurred. Please try again.";
+    bookingConfirmation.style.color = "red";
+  }
+});
+
+  </script>
+</body>
+</html>

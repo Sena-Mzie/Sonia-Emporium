@@ -5,52 +5,126 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <style>
+    /* Base Styles */
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  background: #f4f4f4;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #1a1a1a;
+    line-height: 1.6;
+    background-color: #fdfbf8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .form-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  text-align: center;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
 }
 
-form input, form button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #1a1a1a;
 }
 
-form button {
-  background: #5c67f2;
-  color: #fff;
-  border: none;
-  cursor: pointer;
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s;
 }
 
-form button:hover {
-  background: #4a53db;
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #c9a77c;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #c9a77c;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #b88a6c;
+}
+
+#loginMessage {
+    color: #d63031;
+    font-size: 0.9em;
+    margin-top: 10px;
 }
 
 a {
-  color: #5c67f2;
-  text-decoration: none;
+    display: block;
+    margin-top: 20px;
+    color: #1a1a1a;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
 a:hover {
-  text-decoration: underline;
+    color: #c9a77c;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #c9a77c;
+    box-shadow: 0 0 5px rgba(201, 167, 124, 0.3);
+}
+
+button:hover {
+    background-color: #b88a6c;
+}
+
+#registerMessage {
+    color: #d63031;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.accent-line {
+    width: 40px;
+    height: 2px;
+    background-color: #c9a77c;
+    margin: 20px auto;
+}
   </style>
 
 </head>
@@ -126,6 +200,11 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
+  function validatePassword(password) {
+  const regex = /^(?=.*[!@#$%^&*])(?=.{8,})/; // At least 8 characters, one special character
+  return regex.test(password);
+}
+
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
@@ -160,7 +239,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     if (email === 'admin@sonia.com' && password === 'admin123') {
       window.location.href = 'admin.html';
     } else {
-      window.location.href = 'homepage.html';
+      window.location.href = 'index.html';
     }
   } catch (error) {
     alert(error.message);

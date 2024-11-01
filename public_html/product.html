@@ -4,54 +4,245 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details</title>
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
-  <script src="firebase-config.js"></script>
-  <script src="product.js" defer></script>
+  <style>
+    /* Global Styles */
+    body, h1, h2, p, label, select, button {
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f9f9f9;
+    }
+    h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+
+    /* Layout Components */
+    header, footer {
+        background: #333;
+        color: #fff;
+        padding: 15px 40px;
+        text-align: center;
+        font-size: 14px;
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    nav ul {
+        display: flex;
+        list-style: none;
+    }
+    nav ul li a {
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #333;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+    nav ul li a:hover {
+        color: #c9a77c;
+        transform: scale(1.1);
+    }
+
+    /* Product & Button Styles */
+    #productDetails, #recommendedProducts {
+        margin: 120px auto;
+        padding: 40px;
+        max-width: 800px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+    #productName { font-size: 30px; text-align: center; }
+    #productPrice { color: #c9a77c; font-size: 24px; }
+    .centered { text-align: center; }
+    #productImage, .recommended-product-card img {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 10px;
+    }
+    #addToCart, #goToCart, #returnToShop {
+        background-color: #333;
+        color: #fff;
+        padding: 12px 35px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    #addToCart:hover, #goToCart:hover, #returnToShop:hover { background-color: #555; }
+
+    /* Recommended Products Grid */
+    #recommendationsGrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 20px;
+    }
+    .product-card {
+        padding: 15px;
+        text-align: center;
+        border-radius: 10px;
+        transition: 0.3s;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .product-card:hover { transform: translateY(-5px); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        #productDetails, #recommendedProducts { padding: 20px; }
+        #productName { font-size: 24px; }
+        nav ul li a { padding: 8px 10px; font-size: 13px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="product-details-container">
-    <div id="productDetails">
-      <!-- Product details will be displayed here -->
+
+  <!--HEADER-->
+  <header>
+    <h1>SONIA EMPORIUM</h1>
+    <nav>
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+        </ul>
+    </nav>
+</header>
+
+  <!-- Product Details Section -->
+  <section id="productDetails">
+    <div class="product-image centered">
+      <img id="productImage" alt="Product Image">
     </div>
-  </div>
+    <div class="product-info centered">
+      <h1 id="productName"></h1>
+      <p id="productDescription"></p>
+      <p id="productPrice"></p>
+      <div id="productSizes"></div>
+      <button id="addToCart">Add to Cart</button>
+      <button id="goToCart">Go to Cart</button>
+      <button id="returnToShop">Return to Shop</button>
+    </div>
+  </section>
 
-  <script>
-    import { db } from "./firebase-config.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+  <!-- Recommended Products Section -->
+  <section id="recommendedProducts">
+    <h2>Recommended Products</h2>
+    <div id="recommendationsGrid"></div>
+  </section>
 
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+  authDomain: "sonia-emporium-95984.firebaseapp.com",
+  projectId: "sonia-emporium-95984",
+  messagingSenderId: "582010973914",
+  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+  measurementId: "G-72TR5RZVBB"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Retrieve Product ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('id');
+
+// Elements for displaying product details
+const productNameElem = document.getElementById('productName');
+const productDescriptionElem = document.getElementById('productDescription');
+const productPriceElem = document.getElementById('productPrice');
+const productSizesElem = document.getElementById('productSizes');
+const productImageElem = document.getElementById('productImage');
+
+// Load Product Details
 async function loadProductDetails() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get('id');
+  try {
+    const productRef = doc(db, "product", productId);
+    const productSnapshot = await getDoc(productRef);
 
-  const productDoc = await getDoc(doc(db, "products", productId));
-  if (productDoc.exists()) {
-    const product = productDoc.data();
-    displayProductDetails(product);
-  } else {
-    alert("Product not found!");
+    if (productSnapshot.exists()) {
+      const productData = productSnapshot.data();
+      
+      // Populate the product details
+      productNameElem.textContent = productData.name;
+      productDescriptionElem.textContent = productData.description;
+      productPriceElem.textContent = `$${productData.price}`;
+      productSizesElem.innerHTML = `Sizes: ${productData.sizes.join(", ")}`;
+      productImageElem.src = productData.imageUrl || "default-image.jpg";
+
+      // Load recommended products
+      loadRecommendedProducts(productData.category);
+    } else {
+      console.error("Product not found!");
+    }
+  } catch (error) {
+    console.error("Error loading product details:", error);
   }
 }
 
-function displayProductDetails(product) {
-  const productDetails = document.getElementById('productDetails');
-  productDetails.innerHTML = `
-    <h2>${product.name}</h2>
-    <img src="${product.imageUrl}" alt="${product.name}">
-    <p>${product.description}</p>
-    <p>Price: $${product.price}</p>
-    <p>Sizes: ${product.sizes.join(", ")}</p>
-    <p>Availability: ${product.availability ? "In stock" : "Out of stock"}</p>
-    <button onclick="addToCart('${product.id}')">Add to Cart</button>
-  `;
+// Load Recommended Products
+async function loadRecommendedProducts(category) {
+  try {
+    const recommendationsGrid = document.getElementById('recommendationsGrid');
+    const q = query(collection(db, "product"), where("category", "==", category));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const product = doc.data();
+      if (product.id !== productId) {
+        const productCard = document.createElement('div');
+        productCard.classList.add('product-card');
+        productCard.onclick = () => window.location.href = `product.html?id=${product.id}`;
+
+        productCard.innerHTML = `
+          <img src="${product.imageUrl || "default-image.jpg"}" alt="${product.name}">
+          <h4>${product.name}</h4>
+          <p>$${product.price}</p>
+        `;
+        recommendationsGrid.appendChild(productCard);
+      }
+    });
+  } catch (error) {
+    console.error("Error loading recommended products:", error);
+  }
 }
 
-// Placeholder function to add item to cart
-function addToCart(productId) {
-  alert(`Product ${productId} added to cart.`);
-}
+// Add Product to Cart
+document.getElementById('addToCart').addEventListener('click', async () => {
+  try {
+    const cartItem = {
+      productId: productId,
+      name: productNameElem.textContent,
+      price: parseFloat(productPriceElem.textContent.replace("$", "")),
+      size: productSizesElem.textContent.replace("Sizes: ", ""),
+    };
 
+    await addDoc(collection(db, "cart"), cartItem);
+    alert("Product added to cart!");
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+  }
+});
+
+// Button Navigation
+document.getElementById('goToCart').onclick = () => window.location.href = 'cart.html';
+document.getElementById('returnToShop').onclick = () => window.location.href = 'shop.html';
+
+// Load the product details on page load
 loadProductDetails();
 
   </script>
