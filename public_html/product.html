@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="product.js" defer></script>
+</head>
+<body>
+  <div class="product-details-container">
+    <div id="productDetails">
+      <!-- Product details will be displayed here -->
+    </div>
+  </div>
+
+  <script>
+    import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+async function loadProductDetails() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id');
+
+  const productDoc = await getDoc(doc(db, "products", productId));
+  if (productDoc.exists()) {
+    const product = productDoc.data();
+    displayProductDetails(product);
+  } else {
+    alert("Product not found!");
+  }
+}
+
+function displayProductDetails(product) {
+  const productDetails = document.getElementById('productDetails');
+  productDetails.innerHTML = `
+    <h2>${product.name}</h2>
+    <img src="${product.imageUrl}" alt="${product.name}">
+    <p>${product.description}</p>
+    <p>Price: $${product.price}</p>
+    <p>Sizes: ${product.sizes.join(", ")}</p>
+    <p>Availability: ${product.availability ? "In stock" : "Out of stock"}</p>
+    <button onclick="addToCart('${product.id}')">Add to Cart</button>
+  `;
+}
+
+// Placeholder function to add item to cart
+function addToCart(productId) {
+  alert(`Product ${productId} added to cart.`);
+}
+
+loadProductDetails();
+
+  </script>
+</body>
+</html>

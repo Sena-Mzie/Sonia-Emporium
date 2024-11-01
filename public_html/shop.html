@@ -26,23 +26,24 @@
   
   <script>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
-import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
 
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
   authDomain: "sonia-emporium-95984.firebaseapp.com",
   projectId: "sonia-emporium-95984",
-  storageBucket: "sonia-emporium-95984.firebasestorage.app",
+  storageBucket: "sonia-emporium-95984.appspot.com", // Ensure the bucket name is correct
   messagingSenderId: "582010973914",
   appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
   measurementId: "G-72TR5RZVBB"
 };
 
-// Initialize Firebase
+// Initialize Firebase services
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Categories array
 const categories = ["Luxury Dresses", "Resort Wear", "Haute Couture", "Bespoke Suits", "Luxury Accessories"];
 const categoryList = document.getElementById('categoryList');
 const productGrid = document.getElementById('productGrid');
@@ -61,21 +62,22 @@ async function loadProductsByCategory(category) {
   const q = query(collection(db, "products"), where("category", "==", category));
   const querySnapshot = await getDocs(q);
 
-  querySnapshot.forEach((doc) => {
+  for (const doc of querySnapshot.docs) {
     const product = doc.data();
-    const productCard = createProductCard(product);
+    const productImageUrl = "default-image.jpg"; // Use a default image as a placeholder
+    const productCard = createProductCard(product, productImageUrl);
     productGrid.appendChild(productCard);
-  });
+  }
 }
 
 // Create product card
-function createProductCard(product) {
+function createProductCard(product, imageUrl) {
   const card = document.createElement('div');
   card.classList.add('product-card');
   card.onclick = () => window.location.href = `product.html?id=${product.id}`;
 
   card.innerHTML = `
-    <img src="${product.imageUrl}" alt="${product.name}">
+    <img src="${imageUrl}" alt="${product.name}">
     <h4>${product.name}</h4>
     <p>$${product.price}</p>
   `;
@@ -85,6 +87,6 @@ function createProductCard(product) {
 // Load products for the first category by default
 loadProductsByCategory(categories[0]);
 
-  </script>
+</script>
 </body>
 </html>
