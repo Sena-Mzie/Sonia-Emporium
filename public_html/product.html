@@ -79,21 +79,6 @@
     }
     #addToCart:hover, #goToCart:hover, #returnToShop:hover { background-color: #555; }
 
-    /* Recommended Products Grid */
-    #recommendationsGrid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 20px;
-    }
-    .product-card {
-        padding: 15px;
-        text-align: center;
-        border-radius: 10px;
-        transition: 0.3s;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .product-card:hover { transform: translateY(-5px); }
-
     /* Responsive */
     @media (max-width: 768px) {
         #productDetails, #recommendedProducts { padding: 20px; }
@@ -127,17 +112,16 @@
       <h1 id="productName"></h1>
       <p id="productDescription"></p>
       <p id="productPrice"></p>
-      <div id="productSizes"></div>
+      <div id="productSizes">
+        <label for="sizeSelector">Choose Size:</label>
+        <select id="sizeSelector">
+          <!-- Sizes will be populated here -->
+        </select>
+      </div>
       <button id="addToCart">Add to Cart</button>
       <button id="goToCart">Go to Cart</button>
       <button id="returnToShop">Return to Shop</button>
     </div>
-  </section>
-
-  <!-- Recommended Products Section -->
-  <section id="recommendedProducts">
-    <h2>Recommended Products</h2>
-    <div id="recommendationsGrid"></div>
   </section>
 
   <script type="module">
@@ -146,12 +130,9 @@ import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } 
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-  authDomain: "sonia-emporium-95984.firebaseapp.com",
-  projectId: "sonia-emporium-95984",
-  messagingSenderId: "582010973914",
-  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-  measurementId: "G-72TR5RZVBB"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -165,7 +146,7 @@ const productId = urlParams.get('id');
 const productNameElem = document.getElementById('productName');
 const productDescriptionElem = document.getElementById('productDescription');
 const productPriceElem = document.getElementById('productPrice');
-const productSizesElem = document.getElementById('productSizes');
+const sizeSelectorElem = document.getElementById('sizeSelector');
 const productImageElem = document.getElementById('productImage');
 
 // Load Product Details
@@ -180,9 +161,16 @@ async function loadProductDetails() {
       // Populate the product details
       productNameElem.textContent = productData.name;
       productDescriptionElem.textContent = productData.description;
-      productPriceElem.textContent = `$${productData.price}`;
-      productSizesElem.innerHTML = `Sizes: ${productData.sizes.join(", ")}`;
-      productImageElem.src = productData.imageUrl || "default-image.jpg";
+      productPriceElem.textContent = `R${productData.price}`;
+      productImageElem.src = productData.image || "default-image.jpg";
+
+      // Populate sizes in dropdown
+      productData.size.forEach(size => {
+        const option = document.createElement("option");
+        option.value = size;
+        option.textContent = size;
+        sizeSelectorElem.appendChild(option);
+      });
 
       // Load recommended products
       loadRecommendedProducts(productData.category);
@@ -194,41 +182,21 @@ async function loadProductDetails() {
   }
 }
 
-// Load Recommended Products
-async function loadRecommendedProducts(category) {
-  try {
-    const recommendationsGrid = document.getElementById('recommendationsGrid');
-    const q = query(collection(db, "product"), where("category", "==", category));
-    const querySnapshot = await getDocs(q);
-
-    querySnapshot.forEach((doc) => {
-      const product = doc.data();
-      if (product.id !== productId) {
-        const productCard = document.createElement('div');
-        productCard.classList.add('product-card');
-        productCard.onclick = () => window.location.href = `product.html?id=${product.id}`;
-
-        productCard.innerHTML = `
-          <img src="${product.imageUrl || "default-image.jpg"}" alt="${product.name}">
-          <h4>${product.name}</h4>
-          <p>$${product.price}</p>
-        `;
-        recommendationsGrid.appendChild(productCard);
-      }
-    });
-  } catch (error) {
-    console.error("Error loading recommended products:", error);
-  }
-}
-
 // Add Product to Cart
 document.getElementById('addToCart').addEventListener('click', async () => {
+  const selectedSize = sizeSelectorElem.value;
+
+  if (!selectedSize) {
+    alert("Please select a size.");
+    return;
+  }
+
   try {
     const cartItem = {
       productId: productId,
       name: productNameElem.textContent,
-      price: parseFloat(productPriceElem.textContent.replace("$", "")),
-      size: productSizesElem.textContent.replace("Sizes: ", ""),
+      price: parseFloat(productPriceElem.textContent.replace("R", "")),
+      size: selectedSize,
     };
 
     await addDoc(collection(db, "cart"), cartItem);

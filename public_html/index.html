@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxury Fashion - Home</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
     /* Base styling */
@@ -58,6 +60,13 @@
     nav ul li a:hover, .cart a:hover {
       color: #c9a77c;
     }
+
+  
+   .cart a {
+      color: #1a1a1a;
+      text-decoration: none;
+      font-size: 14px;
+   }
 
     /* Hero section styling */
     .hero {
@@ -181,23 +190,23 @@
     <h2>Explore Our Collections</h2>
     <div class="categories">
       <div class="category">
-        <img src="luxury-dresses.jpg" alt="Luxury Dresses">
+        <img src="img/luxury-dresses.jpg" alt="Luxury Dresses">
         <h3>Luxury Dresses</h3>
       </div>
       <div class="category">
-        <img src="resort-wear.jpg" alt="Resort Wear">
+        <img src="img/resort-wear.jpg" alt="Resort Wear">
         <h3>Resort Wear</h3>
       </div>
       <div class="category">
-        <img src="haute-couture.jpg" alt="Haute Couture">
+        <img src="img/haute-couture.jpg" alt="Haute Couture">
         <h3>Haute Couture</h3>
       </div>
       <div class="category">
-        <img src="bespoke-suits.jpg" alt="Bespoke Suits">
+        <img src="img/bespoke-suits.jpg" alt="Bespoke Suits">
         <h3>Bespoke Suits</h3>
       </div>
       <div class="category">
-        <img src="luxury-accessories.jpg" alt="Luxury Accessories">
+        <img src="img/luxury-accessories.jpg" alt="Luxury Accessories">
         <h3>Luxury Accessories</h3>
       </div>
     </div>
@@ -208,24 +217,102 @@
     <h2>Featured Products</h2>
     <div class="featured-products">
       <div class="product">
-        <img src="product1.jpg" alt="Product 1">
+        <img src="img/product101.jpg" alt="Product 1">
         <h4>Silk Evening Gown</h4>
-        <p>$1,500</p>
+        <p>R3,500</p>
       </div>
       <div class="product">
-        <img src="product2.jpg" alt="Product 2">
+        <img src="img/product109.jpg" alt="Product 2">
         <h4>Tailored Suit</h4>
-        <p>$2,200</p>
+        <p>R9,800</p>
       </div>
       <div class="product">
-        <img src="product3.jpg" alt="Product 3">
+        <img src="img/product107.jpg" alt="Product 3">
         <h4>Leather Handbag</h4>
-        <p>$950</p>
+        <p>R2,050</p>
       </div>
     </div>
   </section>
 
-  <script></script>
+  <script>
+    // Initialize Firebase if not already initialized
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+  authDomain: "sonia-emporium-95984.firebaseapp.com",
+  projectId: "sonia-emporium-95984",
+  storageBucket: "sonia-emporium-95984.appspot.com",
+  messagingSenderId: "582010973914",
+  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+  measurementId: "G-72TR5RZVBB"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Category links
+const categories = document.querySelectorAll('.category');
+categories.forEach(category => {
+  category.addEventListener('click', () => {
+    const categoryName = category.querySelector('h3').innerText;
+    window.location.href = `shop.html?category=${encodeURIComponent(categoryName)}`;
+  });
+});
+
+// Load featured products
+async function loadFeaturedProducts() {
+  try {
+    const featuredProductsContainer = document.querySelector('.featured-products');
+    featuredProductsContainer.innerHTML = '';
+
+    // Query featured products from Firebase
+    const q = query(collection(db, 'products'), where("featured", "==", true));
+    const querySnapshot = await getDocs(q);
+
+    // Display each featured product
+    querySnapshot.forEach(doc => {
+      const product = doc.data();
+      const productElement = document.createElement('div');
+      productElement.classList.add('product');
+      productElement.innerHTML = `
+        <img src="${product.imageUrl}" alt="${product.name}">
+        <h4>${product.name}</h4>
+        <p>$${product.price}</p>
+      `;
+
+      // Redirect to product details on click
+      productElement.addEventListener('click', () => {
+        window.location.href = `product.html?id=${doc.id}`;
+      });
+
+      featuredProductsContainer.appendChild(productElement);
+    });
+  } catch (error) {
+    console.error("Error loading featured products:", error);
+  }
+}
+
+// Load featured products on page load
+loadFeaturedProducts();
+
+// Responsive Mobile Menu Toggle (optional for mobile views)
+const navLinks = document.querySelector('.nav-links');
+const toggleMenu = () => {
+  navLinks.classList.toggle('active');
+};
+
+// Close mobile menu on link click
+navLinks.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A') {
+    navLinks.classList.remove('active');
+  }
+});
+
+  </script>
 </body>
 </html>
 

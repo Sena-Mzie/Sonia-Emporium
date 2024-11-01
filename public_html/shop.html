@@ -1,105 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop</title>
-  <link rel="stylesheet" href="styles.css">
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sonia Emporium</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #1a1a1a;
+            line-height: 1.6;
+            background-color: #fdfbf8;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .logo h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: #1a1a1a;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #c9a77c;
+        }
+
+        .cart a {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        .btn:hover {
+            background-color: #555;
+        }
+
+        .shop-section {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        .shop-section h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .product-card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .product-card p {
+            color: #666;
+            font-size: 1em;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .footer-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <!--HEADER-->
-  <header>
-    <h1>SONIA EMPORIUM</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
-            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
-            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
-        </ul>
-    </nav>
-</header>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <h1>SONIA EMPORIUM</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+                <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+                <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+            </ul>
+        </nav>
+        <div class="cart">
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
+        </div>
+    </header>
 
-  <div class="shop-container">
-    <aside class="category-sidebar">
-      <h3>Categories</h3>
-      <ul id="categoryList">
-        <!-- Categories populated dynamically -->
-      </ul>
-    </aside>
+    <!-- Shop Items Section -->
+    <section class="shop-section">
+        <h2>Shop All Items</h2>
+        <div class="product-grid" id="product-list">
+            <!-- Products will be loaded here dynamically -->
+        </div>
+    </section>
 
-    <main class="product-display">
-      <h2>Explore Our Collection</h2>
-      <div id="productGrid" class="product-grid">
-        <!-- Products will be displayed here dynamically -->
-      </div>
-    </main>
-  </div>
-  
-  <script>
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+    <!-- Footer -->
+    <footer>
+        <div class="footer-section">
+            <h3>Our Heritage</h3>
+            <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
+        </div>
+    </footer>
 
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-  authDomain: "sonia-emporium-95984.firebaseapp.com",
-  projectId: "sonia-emporium-95984",
-  messagingSenderId: "582010973914",
-  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-  measurementId: "G-72TR5RZVBB"
-};
+    <!-- Firebase and JavaScript for Firestore -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-// Initialize Firebase services
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+        const firebaseConfig = {
+    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+    authDomain: "sonia-emporium-95984.firebaseapp.com",
+    projectId: "sonia-emporium-95984",
+    storageBucket: "sonia-emporium-95984.firebasestorage.app",
+    messagingSenderId: "582010973914",
+    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+    measurementId: "G-72TR5RZVBB"
+  };
 
-// Categories array
-const categories = ["Luxury Dresses", "Resort Wear", "Haute Couture", "Bespoke Suits", "Luxury Accessories"];
-const categoryList = document.getElementById('categoryList');
-const productGrid = document.getElementById('productGrid');
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
-// Populate category sidebar
-categories.forEach(category => {
-  const li = document.createElement('li');
-  li.innerText = category;
-  li.onclick = () => loadProductsByCategory(category);
-  categoryList.appendChild(li);
-});
+        async function fetchAndDisplayProducts() {
+    const productList = document.getElementById('product-list');
+    const productsCollection = collection(db, 'product');
+    const querySnapshot = await getDocs(productsCollection);
 
-// Load products by category
-async function loadProductsByCategory(category) {
-  productGrid.innerHTML = ""; // Clear existing products
-  const q = query(collection(db, "product"), where("category", "==", category));
-  const querySnapshot = await getDocs(q);
-
-  for (const doc of querySnapshot.docs) {
-    const product = doc.data();
-    const productImageUrl = "default-image.jpg"; // Use a default image as a placeholder
-    const productCard = createProductCard(product, productImageUrl);
-    productGrid.appendChild(productCard);
-  }
+    querySnapshot.forEach(doc => {
+        const product = doc.data();
+        const productCard = `
+            <div class="product-card">
+                <a href="product.html?id=${doc.id}">
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p>Price: R${product.price}</p>
+                </a>
+            </div>
+        `;
+        productList.innerHTML += productCard;
+    });
 }
-
-// Create product card
-function createProductCard(product, imageUrl) {
-  const card = document.createElement('div');
-  card.classList.add('product-card');
-  card.onclick = () => window.location.href = `product.html?id=${product.id}`;
-
-  card.innerHTML = `
-    <img src="${imageUrl}" alt="${product.name}">
-    <h4>${product.name}</h4>
-    <p>$${product.price}</p>
-  `;
-  return card;
-}
-
-// Load products for the first category by default
-loadProductsByCategory(categories[0]);
-</script>
-
+        // Call the function to load products on page load
+        fetchAndDisplayProducts();
+    </script>
 </body>
 </html>
+    
