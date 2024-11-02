@@ -5,15 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shopping Cart</title>
   <style>
-    body {
+body {
         font-family: 'Montserrat', sans-serif;
         margin: 0;
         padding: 0;
         color: #1a1a1a;
         line-height: 1.6;
-        background-color: #fdfbf8;
+        background-color: #f8f4ee;
     }
 
+    /* Header */
     header {
         background-color: #ffffff;
         padding: 20px 40px;
@@ -30,9 +31,9 @@
 
     .logo h1 {
         font-family: 'Cormorant Garamond', serif;
-        font-size: 28px;
+        font-size: 32px;
+        color: #333;
         margin: 0;
-        letter-spacing: 2px;
     }
 
     nav ul {
@@ -46,71 +47,117 @@
         color: #1a1a1a;
         text-decoration: none;
         padding: 10px 20px;
-        font-size: 14px;
+        font-size: 15px;
         letter-spacing: 1px;
-        transition: color 0.3s;
+        transition: color 0.3s ease;
     }
 
     nav ul li a:hover {
         color: #c9a77c;
     }
 
-    .btn {
-        display: inline-block;
-        padding: 15px 40px;
-        background-color: transparent;
-        border: 1px solid white;
-        color: white;
-        text-decoration: none;
-        transition: all 0.3s;
-        font-size: 14px;
-        letter-spacing: 2px;
-    }
-
-    .btn:hover {
-        background-color: white;
-        color: #1a1a1a;
-    }
-
-    section {
-        padding: 80px 40px;
-    }
-
-    section h2 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 36px;
-        text-align: center;
-        margin-bottom: 40px;
-    }
-
     .cart-container {
         display: grid;
         grid-template-columns: 2fr 1fr;
         gap: 40px;
-        margin: 100px 40px;
-        padding-bottom: 40px;
+        padding: 160px 40px;
+        max-width: 1200px;
+        margin: auto;
     }
 
-    .cart-items, .cart-summary {
+    /* Cart Items */
+    .cart-items {
         padding: 20px;
         background-color: #fff;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
     }
 
-    .cart-items h2, .cart-summary h2 {
+    .cart-items h2 {
         font-family: 'Cormorant Garamond', serif;
         font-size: 28px;
         margin-bottom: 20px;
     }
 
-    .cart-summary p {
-        font-size: 18px;
-        font-weight: 600;
+    .cart-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item:last-child {
+        border-bottom: none;
+    }
+
+    .cart-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    .cart-item-details {
+        flex: 1;
+        margin-left: 20px;
+    }
+
+    .cart-item-details h4 {
+        font-size: 16px;
+        color: #333;
+        margin: 0;
+    }
+
+    .cart-item-details .price {
+        font-size: 14px;
+        color: #c9a77c;
+    }
+
+    .quantity-toggle {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .quantity-toggle button {
+        background-color: #f4f4f4;
+        border: 1px solid #ddd;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .quantity-toggle button:hover {
+        background-color: #c9a77c;
+        color: #fff;
+    }
+
+    /* Order Summary */
+    .cart-summary {
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+    }
+
+    .cart-summary h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 24px;
         margin-bottom: 20px;
     }
 
-    .cart-summary #cart-total {
+    .cart-summary p {
+        font-size: 18px;
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .cart-summary #totalPrice {
+        font-size: 20px;
         color: #c9a77c;
+        font-weight: bold;
     }
 
     .cart-summary button {
@@ -121,6 +168,7 @@
         border: none;
         font-size: 16px;
         cursor: pointer;
+        border-radius: 8px;
         transition: background-color 0.3s;
     }
 
@@ -128,53 +176,49 @@
         background-color: #b68e5b;
     }
 
+    /* Footer */
     footer {
         background-color: #1a1a1a;
         color: white;
-        padding: 60px 40px;
+        padding: 40px;
+        font-size: 14px;
+        text-align: center;
     }
 
     .footer-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 40px;
+        display: flex;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: auto;
     }
 
-    .footer-section h3 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    .footer-section ul {
+    .footer-content ul {
         list-style: none;
         padding: 0;
     }
 
-    .footer-section ul li a {
-        color: white;
+    .footer-content ul li a {
+        color: #c9a77c;
         text-decoration: none;
         font-size: 14px;
-        line-height: 2;
+        transition: color 0.3s ease;
     }
 
-    .accent-line {
-        width: 40px;
-        height: 1px;
-        background-color: #c9a77c;
-        margin: 20px auto;
+    .footer-content ul li a:hover {
+        color: #fff;
     }
 
     @media (max-width: 768px) {
         .cart-container {
             grid-template-columns: 1fr;
         }
-
-        .footer-content {
-            grid-template-columns: 1fr;
-        }
     }
+  </style>
+</head>
+<body>
+
 </style>
+
 
 </head>
 <body>
@@ -288,9 +332,9 @@ function updateSummary() {
   const deliveryFee = subtotal * 0.1;
   const total = subtotal + deliveryFee;
 
-  subtotalElem.textContent = `Subtotal: $${subtotal.toFixed(2)}`;
-  deliveryFeeElem.textContent = `Delivery Fee (10%): $${deliveryFee.toFixed(2)}`;
-  totalPriceElem.textContent = `Total: $${total.toFixed(2)}`;
+  subtotalElem.textContent = `Subtotal: R${subtotal.toFixed(2)}`;
+  deliveryFeeElem.textContent = `Delivery Fee (10%): R${deliveryFee.toFixed(2)}`;
+  totalPriceElem.textContent = `Total: R${total.toFixed(2)}`;
 }
 
 // Change Quantity of Cart Item
