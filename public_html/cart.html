@@ -258,117 +258,126 @@ body {
     <button id="checkoutButton">Proceed to Checkout</button>
   </section>
 
-  <script type="module" >
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-  authDomain: "sonia-emporium-95984.firebaseapp.com",
-  projectId: "sonia-emporium-95984",
-  messagingSenderId: "582010973914",
-  appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-  measurementId: "G-72TR5RZVBB"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+      authDomain: "sonia-emporium-95984.firebaseapp.com",
+      projectId: "sonia-emporium-95984",
+      messagingSenderId: "582010973914",
+      appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+      measurementId: "G-72TR5RZVBB"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-let cartItems = [];
-let subtotal = 0;
+    let cartItems = [];
+    let subtotal = 0;
+    let totalQuantity = 0; // New variable to track total quantity
 
-// Elements for displaying cart details and summary
-const cartItemsList = document.getElementById('cartItemsList');
-const subtotalElem = document.getElementById('subtotal');
-const deliveryFeeElem = document.getElementById('deliveryFee');
-const totalPriceElem = document.getElementById('totalPrice');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const subtotalElem = document.getElementById('subtotal');
+    const deliveryFeeElem = document.getElementById('deliveryFee');
+    const totalPriceElem = document.getElementById('totalPrice');
 
-// Load Cart Items
-async function loadCartItems() {
-  cartItemsList.innerHTML = ''; // Clear existing items
-  subtotal = 0;
+    async function loadCartItems() {
+      cartItemsList.innerHTML = '';
+      subtotal = 0;
+      totalQuantity = 0; // Reset total quantity
 
-  const querySnapshot = await getDocs(collection(db, "cart"));
-  cartItems = [];
+      const querySnapshot = await getDocs(collection(db, "cart"));
+      cartItems = [];
 
-  querySnapshot.forEach((doc) => {
-    const item = { ...doc.data(), id: doc.id };
-    cartItems.push(item);
-    subtotal += item.price * (item.quantity || 1); // Add item price to subtotal
-  });
+      querySnapshot.forEach((doc) => {
+        const item = { ...doc.data(), id: doc.id };
+        cartItems.push(item);
+        subtotal += item.price * (item.quantity || 1);
+        totalQuantity += item.quantity || 1; // Add to total quantity
+      });
 
-  cartItems.forEach(item => {
-    const cartItemElem = createCartItemElement(item);
-    cartItemsList.appendChild(cartItemElem);
-  });
+      cartItems.forEach(item => {
+        const cartItemElem = createCartItemElement(item);
+        cartItemsList.appendChild(cartItemElem);
+      });
 
-  updateSummary();
-}
+      updateSummary();
+    }
 
-// Create Cart Item Element
-function createCartItemElement(item) {
-  const cartItemElem = document.createElement('div');
-  cartItemElem.classList.add('cart-item');
-  
-  cartItemElem.innerHTML = `
-    <img src="${item.imageUrl || 'default-image.jpg'}" alt="${item.name}">
-    <div class="cart-item-details">
-      <h4>${item.name}</h4>
-      <p>Size: ${item.size}</p>
-      <p>$${item.price}</p>
-      <div class="quantity-toggle">
-        <button onclick="changeQuantity('${item.id}', -1)">-</button>
-        <span id="quantity-${item.id}">${item.quantity || 1}</span>
-        <button onclick="changeQuantity('${item.id}', 1)">+</button>
-      </div>
-    </div>
-    <button onclick="removeItem('${item.id}')">Remove</button>
-  `;
-  return cartItemElem;
-}
+    function createCartItemElement(item) {
+      const cartItemElem = document.createElement('div');
+      cartItemElem.classList.add('cart-item');
+      
+      cartItemElem.innerHTML = `
+        <img src="${item.image || 'default-image.jpg'}" alt="${item.name}">
+        <div class="cart-item-details">
+          <h4>${item.name}</h4>
+          <p>Size: ${item.size}</p>
+          <p>$${item.price}</p>
+          <div class="quantity-toggle">
+            <button onclick="changeQuantity('${item.id}', -1)">-</button>
+            <span id="quantity-${item.id}">${item.quantity || 1}</span>
+            <button onclick="changeQuantity('${item.id}', 1)">+</button>
+          </div>
+        </div>
+        <button onclick="removeItem('${item.id}')">Remove</button>
+      `;
+      return cartItemElem;
+    }
 
-// Update Summary (Subtotal, Delivery Fee, and Total)
-function updateSummary() {
-  const deliveryFee = subtotal * 0.1;
-  const total = subtotal + deliveryFee;
+    async function updateSummary() {
+      const deliveryFee = subtotal * 0.1;
+      const total = subtotal + deliveryFee;
 
-  subtotalElem.textContent = `Subtotal: R${subtotal.toFixed(2)}`;
-  deliveryFeeElem.textContent = `Delivery Fee (10%): R${deliveryFee.toFixed(2)}`;
-  totalPriceElem.textContent = `Total: R${total.toFixed(2)}`;
-}
+      subtotalElem.textContent = `Subtotal: R${subtotal.toFixed(2)}`;
+      deliveryFeeElem.textContent = `Delivery Fee (10%): R${deliveryFee.toFixed(2)}`;
+      totalPriceElem.textContent = `Total: R${total.toFixed(2)}`;
 
-// Change Quantity of Cart Item
-window.changeQuantity = async (itemId, change) => {
-  const item = cartItems.find(item => item.id === itemId);
-  if (!item) return;
+      // Update total price and quantity in Firestore
+      await setDoc(doc(db, "cart", "cartSummary"), {
+        totalPrice: total,
+        totalQuantity: totalQuantity,
+        subtotal: subtotal,
+        deliveryFee: deliveryFee
+      });
+    }
 
-  item.quantity = (item.quantity || 1) + change;
-  if (item.quantity < 1) item.quantity = 1; // Minimum quantity is 1
+    window.changeQuantity = async (itemId, change) => {
+      const item = cartItems.find(item => item.id === itemId);
+      if (!item) return;
 
-  document.getElementById(`quantity-${itemId}`).textContent = item.quantity;
+      item.quantity = (item.quantity || 1) + change;
+      if (item.quantity < 1) item.quantity = 1;
 
-  await updateDoc(doc(db, "cart", itemId), { quantity: item.quantity });
-  subtotal += item.price * change;
-  updateSummary();
-};
+      document.getElementById(`quantity-${itemId}`).textContent = item.quantity;
 
-// Remove Item from Cart
-window.removeItem = async (itemId) => {
-  await deleteDoc(doc(db, "cart", itemId));
-  cartItems = cartItems.filter(item => item.id !== itemId);
+      await updateDoc(doc(db, "cart", itemId), { quantity: item.quantity });
+      subtotal += item.price * change;
+      totalQuantity += change;
+      updateSummary();
+    };
 
-  loadCartItems(); // Reload cart items
-};
+    window.removeItem = async (itemId) => {
+      const item = cartItems.find(item => item.id === itemId);
+      if (item) {
+        totalQuantity -= item.quantity || 1; // Subtract item quantity from total
+        subtotal -= item.price * (item.quantity || 1);
+      }
 
-// Proceed to Checkout
-document.getElementById('checkoutButton').addEventListener('click', () => {
-  alert("Proceeding to checkout...");
- window.location.href = 'checkout.html'
-});
+      await deleteDoc(doc(db, "cart", itemId));
+      cartItems = cartItems.filter(item => item.id !== itemId);
 
-// Initial load
-loadCartItems();
+      loadCartItems();
+    };
 
+    document.getElementById('checkoutButton').addEventListener('click', () => {
+      alert("Proceeding to checkout...");
+      window.location.href = 'checkout.html';
+    });
+
+    loadCartItems();
   </script>
 </body>
 </html>
