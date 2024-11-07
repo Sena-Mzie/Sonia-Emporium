@@ -7,88 +7,73 @@
   <link rel="stylesheet" href="admin.css">
   <style>
     body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  display: flex;
-}
+      font-family: Arial, sans-serif;
+      margin: 0;
+      display: flex;
+    }
 
-.dashboard-container {
-  display: flex;
-  width: 100%;
-}
+    .dashboard-container {
+      display: flex;
+      width: 100%;
+    }
 
-.sidebar {
-  width: 200px;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-}
+    .sidebar {
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+    }
 
-.sidebar h2 {
-  margin: 0;
-  margin-bottom: 20px;
-}
+    .sidebar h2,
+    .sidebar p {
+      margin-bottom: 20px;
+    }
 
-.sidebar button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background-color: #444;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.sidebar button:hover {
-  background-color: #555;
-}
-
-.content {
-  flex-grow: 1;
-  padding: 20px;
-}
-
-.dashboard-section {
-  display: none;
-}
-
-#inventory-section,
-#bookings-section,
-#users-section {
-  display: none;
-}
-
-#inventory-list, #bookings-list, #users-list {
-  margin-top: 20px;
-  background-color: #f9f9f9;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.item, .booking, .user {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  background-color: #fff;
-  margin-bottom: 5px;
-  border-radius: 5px;
-}
+    .sidebar button,
+    .logout-button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
     .logout-button {
-  margin-top: 20px;
-  padding: 10px;
-  width: 100%;
-  background-color: #e74c3c;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-}
+      background-color: #e74c3c;
+    }
 
-.logout-button:hover {
-  background-color: #c0392b;
-}
+    .sidebar button:hover,
+    .logout-button:hover {
+      background-color: #555;
+    }
 
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .dashboard-section {
+      display: none;
+    }
+
+    .list-container {
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background-color: #fff;
+      margin-bottom: 5px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -96,16 +81,13 @@
     <aside class="sidebar">
       <h2>Admin Dashboard</h2>
       <p id="admin-email"></p>
-      <nav>
-        <button onclick="showSection('inventory')">Manage Inventory</button>
-        <button onclick="showSection('bookings')">Manage Bookings</button>
-        <button onclick="showSection('users')">Manage Users</button>
-      </nav>
+      <button onclick="showSection('inventory')">Manage Inventory</button>
+      <button onclick="showSection('bookings')">Manage Bookings</button>
+      <button onclick="showSection('users')">Manage Users</button>
       <button id="logout-button" class="logout-button" onclick="logout()">Logout</button>
     </aside>
 
     <main class="content">
-      <!-- Inventory Management -->
       <section id="inventory-section" class="dashboard-section">
         <h2>Inventory Management</h2>
         <form id="add-item-form">
@@ -114,19 +96,17 @@
           <input type="text" id="itemCategory" placeholder="Category" required>
           <button type="submit">Add Item</button>
         </form>
-        <div id="inventory-list"></div>
+        <div id="inventory-list" class="list-container"></div>
       </section>
 
-      <!-- Bookings Management -->
       <section id="bookings-section" class="dashboard-section">
         <h2>Bookings Management</h2>
-        <div id="bookings-list"></div>
+        <div id="bookings-list" class="list-container"></div>
       </section>
 
-      <!-- Users Management -->
       <section id="users-section" class="dashboard-section">
         <h2>Users Management</h2>
-        <div id="users-list"></div>
+        <div id="users-list" class="list-container"></div>
       </section>
     </main>
   </div>
@@ -136,135 +116,116 @@
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
     import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
 
-    // Firebase configuration
     const firebaseConfig = {
-        apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-        authDomain: "sonia-emporium-95984.firebaseapp.com",
-        projectId: "sonia-emporium-95984",
-        messagingSenderId: "582010973914",
-        appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-        measurementId: "G-72TR5RZVBB"
-    };
+    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+    authDomain: "sonia-emporium-95984.firebaseapp.com",
+    projectId: "sonia-emporium-95984",
+    storageBucket: "sonia-emporium-95984.firebasestorage.app",
+    messagingSenderId: "582010973914",
+    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+    measurementId: "G-72TR5RZVBB"
+  };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // Check if the logged-in user is the admin
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const email = user.email;
-            if (email === "admin@sonia.com") {
-                document.getElementById('admin-email').innerText = `Logged in as: ${email}`;
-                loadInventory();
-                loadBookings();
-                loadUsers();
-            } else {
-                alert("Access denied: Admins only.");
-                window.location.href = "login.html";
-            }
-        } else {
-            window.location.href = "login.html";
-        }
+      if (user && user.email === "admin@sonia.com") {
+        document.getElementById('admin-email').innerText = `Logged in as: ${user.email}`;
+        loadSectionData();
+      } else {
+        alert("Access denied: Admins only.");
+        window.location.href = "login.html";
+      }
     });
 
-    // Logout function
     function logout() {
-        signOut(auth).then(() => {
-            window.location.href = "login.html";
-        }).catch((error) => console.error("Error logging out:", error));
+      signOut(auth)
+        .then(() => window.location.href = "login.html")
+        .catch((error) => console.error("Error logging out:", error));
     }
 
-    // Switch sections
     function showSection(section) {
-        document.querySelectorAll('.dashboard-section').forEach((sec) => sec.style.display = 'none');
-        document.getElementById(`${section}-section`).style.display = 'block';
+      document.querySelectorAll('.dashboard-section').forEach((sec) => sec.style.display = 'none');
+      document.getElementById(`${section}-section`).style.display = 'block';
     }
 
-    // Load inventory items
+    async function loadSectionData() {
+      await Promise.all([loadInventory(), loadBookings(), loadUsers()]);
+    }
+
     async function loadInventory() {
-        const inventoryList = document.getElementById('inventory-list');
-        inventoryList.innerHTML = "";
-        const querySnapshot = await getDocs(collection(db, "products"));
-        querySnapshot.forEach((doc) => {
-            const item = doc.data();
-            const itemElement = document.createElement('div');
-            itemElement.classList.add('item');
-            itemElement.innerHTML = `
-                <p>${item.name} - $${item.price} (${item.category})</p>
-                <button onclick="deleteItem('${doc.id}')">Delete</button>
-            `;
-            inventoryList.appendChild(itemElement);
-        });
+      const inventoryList = document.getElementById('inventory-list');
+      inventoryList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "product"));
+      querySnapshot.forEach((doc) => {
+        const item = doc.data();
+        inventoryList.innerHTML += `
+          <div class="list-item">
+            <p>${item.name} - $${item.price} (${item.category})</p>
+            <button onclick="deleteItem('${doc.id}')">Delete</button>
+          </div>
+        `;
+      });
     }
 
-    // Add a new item to inventory
-    document.getElementById('add-item-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('itemName').value;
-        const price = document.getElementById('itemPrice').value;
-        const category = document.getElementById('itemCategory').value;
-
-        await addDoc(collection(db, "products"), { name, price, category });
-        loadInventory();
-    });
-
-    // Delete an item from inventory
-    async function deleteItem(itemId) {
-        await deleteDoc(doc(db, "products", itemId));
-        loadInventory();
-    }
-
-    // Load bookings
     async function loadBookings() {
-        const bookingsList = document.getElementById('bookings-list');
-        bookingsList.innerHTML = "";
-        const querySnapshot = await getDocs(collection(db, "booking"));
-        querySnapshot.forEach((doc) => {
-            const booking = doc.data();
-            const bookingElement = document.createElement('div');
-            bookingElement.classList.add('booking');
-            bookingElement.innerHTML = `
-                <p>${booking.name} - ${booking.date} at ${booking.time}</p>
-                <button onclick="cancelBooking('${doc.id}')">Cancel</button>
-            `;
-            bookingsList.appendChild(bookingElement);
-        });
+      const bookingsList = document.getElementById('bookings-list');
+      bookingsList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "bookings"));
+      querySnapshot.forEach((doc) => {
+        const booking = doc.data();
+        bookingsList.innerHTML += `
+          <div class="list-item">
+            <p>${booking.name} - ${booking.date} at ${booking.time}</p>
+            <button onclick="cancelBooking('${doc.id}')">Cancel</button>
+          </div>
+        `;
+      });
     }
 
-    // Cancel a booking
-    async function cancelBooking(bookingId) {
-        await deleteDoc(doc(db, "booking", bookingId));
-        loadBookings();
-    }
-
-    // Load users
     async function loadUsers() {
-        const usersList = document.getElementById('users-list');
-        usersList.innerHTML = "";
-        const querySnapshot = await getDocs(collection(db, "users"));
-        querySnapshot.forEach((doc) => {
-            const user = doc.data();
-            const userElement = document.createElement('div');
-            userElement.classList.add('user');
-            userElement.innerHTML = `
-                <p>${user.email} - ${user.firstName} ${user.lastName}</p>
-                <button onclick="deleteUser('${doc.id}')">Delete</button>
-            `;
-            usersList.appendChild(userElement);
-        });
+      const usersList = document.getElementById('users-list');
+      usersList.innerHTML = "";
+      const querySnapshot = await getDocs(collection(db, "users"));
+      querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        usersList.innerHTML += `
+          <div class="list-item">
+            <p>${user.email} - ${user.firstName} ${user.lastName}</p>
+            <button onclick="deleteUser('${doc.id}')">Delete</button>
+          </div>
+        `;
+      });
     }
 
-    // Delete a user
+    async function deleteItem(itemId) {
+      try {
+        await deleteDoc(doc(db, "product", itemId));
+        loadInventory();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+      }
+    }
+
+    async function cancelBooking(bookingId) {
+      try {
+        await deleteDoc(doc(db, "bookings", bookingId));
+        loadBookings();
+      } catch (error) {
+        console.error("Error cancelling booking:", error);
+      }
+    }
+
     async function deleteUser(userId) {
+      try {
         await deleteDoc(doc(db, "users", userId));
         loadUsers();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     }
-
-    export { showSection, logout, deleteItem, cancelBooking, deleteUser };
-</script>
-
+  </script>
 </body>
 </html>
-
