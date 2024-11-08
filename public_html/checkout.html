@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* CSS styles */
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
@@ -16,35 +15,31 @@
       line-height: 1.6;
       background-color: #fdfbf8;
     }
-
     header {
       background-color: #ffffff;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       position: fixed;
       width: 100%;
       top: 0;
       z-index: 1000;
       box-sizing: border-box;
     }
-
     .logo h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 28px;
       margin: 0;
       letter-spacing: 2px;
     }
-
     nav ul {
       display: flex;
       list-style: none;
       margin: 0;
       padding: 0;
     }
-
     nav ul li a {
       color: #1a1a1a;
       text-decoration: none;
@@ -53,94 +48,170 @@
       letter-spacing: 1px;
       transition: color 0.3s;
     }
-
     nav ul li a:hover {
       color: #c9a77c;
     }
-
     .cart a {
       color: #1a1a1a;
       text-decoration: none;
       font-size: 14px;
     }
 
-    #checkout-container {
-      max-width: 600px;
-      margin: 120px auto;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    .checkout-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 120px 40px 40px;
+      gap: 40px;
     }
 
-    #checkout-container h2 {
+    .checkout-form, .order-summary {
+      flex: 1;
+      padding: 40px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+    }
+
+    .checkout-form h2, .order-summary h2 {
       font-family: 'Cormorant Garamond', serif;
-      text-align: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .checkout-form label {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
       color: #333;
     }
 
-    #checkout-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    #deliveryInfoSection, #orderSummary {
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      max-width: 600px;
-    }
-
-    form label {
-      display: block;
-      margin-top: 10px;
-      color: #1a1a1a;
-      font-size: 14px;
-    }
-
-    input[type="text"], textarea, select {
+    .checkout-form input, .checkout-form textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: #f9f9f9;
     }
 
-    button {
-      padding: 10px;
-      margin: 5px;
-      cursor: pointer;
+    .checkout-form textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .checkout-form button, .order-summary button {
+      width: 100%;
+      padding: 15px;
+      color: white;
       border: none;
-      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      border-radius: 5px;
+    }
+
+    .checkout-form button {
+      background-color: #c9a77c;
+    }
+
+    .checkout-form button:hover {
+      background-color: #b68e5b;
+    }
+
+    .order-summary p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .order-summary span {
+      color: #c9a77c;
+    }
+
+    .order-summary button {
+      background-color: #1a1a1a;
+    }
+
+    .order-summary button:hover {
+      background-color: #333;
+    }
+
+    #success-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 60px 40px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
       font-size: 14px;
-      letter-spacing: 1px;
-      transition: all 0.3s;
+      line-height: 2;
     }
 
-    #backToCartButton {
-      background-color: #f44336;
-      color: white;
+    .accent-line {
+      width: 40px;
+      height: 1px;
+      background-color: #c9a77c;
+      margin: 20px auto;
     }
 
-    #confirmOrderButton {
-      background-color: #4CAF50;
-      color: white;
-    }
-
-    button:hover {
-      opacity: 0.9;
+    @media (max-width: 768px) {
+      .checkout-container {
+        flex-direction: column;
+      }
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Navigation Bar -->
   <header>
     <div class="logo">
       <h1>SONIA EMPORIUM</h1>
@@ -155,121 +226,186 @@
       </ul>
     </nav>
     <div class="cart">
-      <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart </a>
+      <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
     </div>
   </header>
-  
-  <!-- Delivery Information Section -->
-  <section id="deliveryInfoSection">
-    <h1>Checkout</h1>
-    <form id="checkoutForm">
-      <label for="address">Delivery Address:</label>
-      <input type="text" id="address" name="address" required placeholder="Enter your delivery address">
 
-      <label for="notes">Delivery Notes:</label>
-      <textarea id="notes" name="notes" placeholder="Additional delivery instructions"></textarea>
+  <div class="checkout-container">
+    <section class="checkout-form">
+      <h2>Checkout</h2>
+      <form id="checkout-form">
+        <!-- Form fields -->
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
 
-      <label for="paymentMethod">Payment Method:</label>
-      <select id="paymentMethod" name="paymentMethod" required>
-        <option value="cash">Cash on Delivery</option>
-        <option value="eft">EFT</option>
-      </select>
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required>
+
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" required>
+
+        <label for="postal-code">Postal Code</label>
+        <input type="text" id="postal-code" name="postal-code" required>
+
+        <label for="delivery-notes">Delivery Notes</label>
+        <textarea id="delivery-notes" name="delivery-notes"></textarea>
+
+        <label for="card-number">Card Number</label>
+        <input type="text" id="card-number" name="card-number" placeholder="1111-2222-3333-4444" required>
+
+        <label for="card-expiration">Expiration Date</label>
+        <input type="text" id="card-expiration" name="card-expiration" placeholder="MM/YY" required>
+
+        <label for="card-cvv">CVV</label>
+        <input type="text" id="card-cvv" name="card-cvv" placeholder="123" required>
+
+        <button type="submit">Complete Purchase</button>
     </form>
-  </section>
+</section>
+
+      </form>
+    </section>
 
   <!-- Order Summary Section -->
-  <section id="orderSummary">
+  <section class="order-summary">
     <h2>Order Summary</h2>
     <p id="totalItems">Total Items: 0</p>
     <p id="totalPrice">Total Price: R0.00</p>
     <button id="backToCartButton">Return to Cart</button>
+    <br>
+    <br>
     <button id="confirmOrderButton">Confirm Order</button>
   </section>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+    <!-- Purchase Successful Modal -->
+    <div id="success-modal" class="modal">
+      <div class="modal-content">
+        <h2>Purchase Successful!</h2>
+        <p>Thank you for your purchase.</p>
+        <button id="close-modal">Close</button>
+      </div>
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-      authDomain: "sonia-emporium-95984.firebaseapp.com",
-      projectId: "sonia-emporium-95984",
-      messagingSenderId: "582010973914",
-      appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-      measurementId: "G-72TR5RZVBB"
-    };
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>Our Heritage</h3>
+                <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
+            </div>
+            <div class="footer-section contact">
+                <h3>Connect With Us</h3>
+                <p>Tel: +27 21 123 4567</p>
+                <p>Email: clientservices@soniaemporium.com</p>
+                <p>By Appointment Only</p>
+            </div>
+        </div>
+    </footer>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    // Elements
-    const totalItemsElem = document.getElementById("totalItems");
-    const totalPriceElem = document.getElementById("totalPrice");
-    const checkoutForm = document.getElementById("checkoutForm");
-    const confirmOrderButton = document.getElementById("confirmOrderButton");
-    const backToCartButton = document.getElementById("backToCartButton");
-
-    let totalItems = 0;
-    let totalPrice = 0;
-
-    // Ensure User is Logged In and Cart is Not Empty
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        alert("Please log in to access the checkout page.");
-        window.location.href = "login.html"; // Redirect to login page if not logged in
-      } else {
-        loadCartSummary();
-      }
-    });
-
-    // Load Cart Summary
-    async function loadCartSummary() {
-      const cartItems = [];
-      const querySnapshot = await getDocs(collection(db, "cart"));
-
-      querySnapshot.forEach((doc) => {
-        const item = doc.data();
-        cartItems.push(item);
-        totalItems += item.quantity || 1;
-        totalPrice += item.price * (item.quantity || 1);
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+      import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+    
+      const firebaseConfig = {
+        apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+        authDomain: "sonia-emporium-95984.firebaseapp.com",
+        projectId: "sonia-emporium-95984",
+        messagingSenderId: "582010973914",
+        appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+        measurementId: "G-72TR5RZVBB"
+      };
+    
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+    
+      // Elements
+      const totalItemsElem = document.getElementById("totalItems");
+      const totalPriceElem = document.getElementById("totalPrice");
+      const checkoutForm = document.getElementById("checkoutForm");
+      const confirmOrderButton = document.getElementById("confirmOrderButton");
+      const backToCartButton = document.getElementById("backToCartButton");
+    
+      let totalItems = 0;
+      let totalPrice = 0;
+    
+      // Ensure User is Logged In and Cart is Not Empty
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          alert("Please log in to access the checkout page.");
+          window.location.href = "login.html"; // Redirect to login page if not logged in
+        } else {
+          loadCartSummary();
+        }
       });
-
-      if (cartItems.length === 0) {
-        alert("Your cart is empty. Redirecting to the cart page.");
+    
+      // Load Cart Summary
+      async function loadCartSummary() {
+        const cartItems = [];
+        const querySnapshot = await getDocs(collection(db, "cart"));
+    
+        querySnapshot.forEach((doc) => {
+          const item = doc.data();
+          cartItems.push(item);
+          totalItems += item.quantity || 1;
+          totalPrice += item.price * (item.quantity || 1);
+        });
+    
+        if (cartItems.length === 0) {
+          alert("Your cart is empty. Redirecting to the cart page.");
+          window.location.href = "cart.html";
+        } else {
+          updateSummary();
+        }
+      }
+    
+      // Update Order Summary
+      function updateSummary() {
+        totalItemsElem.textContent = `Total Items: ${totalItems}`;
+        totalPriceElem.textContent = `Total Price: R${(totalPrice * 1.1).toFixed(2)}`; // 10% delivery fee included
+      }
+    
+      // Handle Confirm Order
+      confirmOrderButton.addEventListener("click", async () => {
+        const formData = {
+          fullname: checkoutForm.fullname.value,
+          email: checkoutForm.email.value,
+          address: checkoutForm.address.value,
+          city: checkoutForm.city.value,
+          postalCode: checkoutForm.postalCode.value,
+          notes: checkoutForm.notes.value || "",
+          paymentMethod: checkoutForm.paymentMethod.value,
+          totalItems: totalItems,
+          totalPrice: (totalPrice * 1.1).toFixed(2) // Including 10% delivery fee
+        };
+    
+        // Validate Required Fields
+        if (!formData.fullname || !formData.email || !formData.address || !formData.city || !formData.postalCode || !formData.paymentMethod) {
+          alert("Please fill in all required fields.");
+          return;
+        }
+    
+        try {
+          // Save Order Data to Firestore
+          await addDoc(collection(db, "checkout"), formData);
+          alert("Order confirmed! Thank you for your purchase.");
+          window.location.href = "order-confirmation.html"; // Redirect to confirmation page
+        } catch (error) {
+          console.error("Error adding document: ", error);
+          alert("There was an issue with your order. Please try again.");
+        }
+      });
+    
+      // Return to Cart
+      backToCartButton.addEventListener("click", () => {
         window.location.href = "cart.html";
-      } else {
-        updateSummary();
-      }
-    }
-
-    // Update Order Summary
-    function updateSummary() {
-      totalItemsElem.textContent = `Total Items: ${totalItems}`;
-      totalPriceElem.textContent = `Total Price: R${(totalPrice * 1.1).toFixed(2)}`; // 10% delivery fee included
-    }
-
-    // Handle Confirm Order
-    confirmOrderButton.addEventListener("click", async () => {
-      const address = checkoutForm.address.value;
-      const notes = checkoutForm.notes.value;
-      const paymentMethod = checkoutForm.paymentMethod.value;
-
-      if (!address || !paymentMethod) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      // Simulating order confirmation (replace with actual database write if needed)
-      alert(`Order confirmed! \n\nAddress: ${address} \nNotes: ${notes} \nPayment Method: ${paymentMethod}`);
-      window.location.href = "order-confirmation.html"; // Redirect to confirmation page
-    });
-
-    // Return to Cart
-    backToCartButton.addEventListener("click", () => {
-      window.location.href = "cart.html";
-    });
-  </script>
+      });
+    </script>
+    
+  
 </body>
 </html>

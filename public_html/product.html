@@ -218,31 +218,33 @@
     } catch (error) {
       console.error("Error loading recommended products:", error);
     }
-  }
-  
+  } 
+
   // Add Product to Cart
-  document.getElementById('addToCart').addEventListener('click', async () => {
-    const selectedSize = sizeSelectorElem.value;
-  
-    if (!selectedSize) {
-      alert("Please select a size.");
-      return;
-    }
-  
-    try {
-      const cartItem = {
-        productId: productId,
-        name: productNameElem.textContent,
-        price: parseFloat(productPriceElem.textContent.replace("R", "")),
-        size: selectedSize,
-      };
-  
-      await addDoc(collection(db, "cart"), cartItem);
-      alert("Product added to cart!");
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-    }
-  });
+document.getElementById('addToCart').addEventListener('click', async () => {
+  const selectedSize = sizeSelectorElem.value;
+
+  if (!selectedSize) {
+    alert("Please select a size.");
+    return;
+  }
+
+  try {
+    const cartItem = {
+      productId: productId,
+      name: productNameElem.textContent,
+      price: parseFloat(productPriceElem.textContent.replace("R", "")),
+      size: selectedSize,
+    };
+
+    // Store the cart item in the "cart summary" collection
+    await addDoc(collection(db, "cart item"), cartItem);
+    alert("Product added to cart!");
+  } catch (error) {
+    console.error("Error adding product to cart:", error);
+  }
+});
+
   
   // Button Navigation
   document.getElementById('goToCart').onclick = () => window.location.href = 'cart.html';
