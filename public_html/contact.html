@@ -131,6 +131,83 @@
         color: white;
     }
 
+    /* Contact Section */
+    #contactSection {
+      padding: 100px 20px 50px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #contactSection h1 {
+      font-size: 2.5rem;
+    }
+
+    #bookingForm {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    #bookingForm label {
+      font-size: 1rem;
+      color: #1a1a1a;
+      display: block;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+
+    #bookingForm input[type="text"],
+    #bookingForm input[type="date"],
+    #bookingForm input[type="time"] {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      color: #1a1a1a;
+      background-color: #f7f7f7;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      transition: border 0.3s ease;
+    }
+
+    #bookingForm input[type="text"]:focus,
+    #bookingForm input[type="date"]:focus,
+    #bookingForm input[type="time"]:focus {
+      border: 1px solid #c9a77c;
+      outline: none;
+    }
+
+    #bookingForm button[type="submit"] {
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #bookingForm button[type="submit"]:hover {
+      background-color: #c9a77c;
+    }
+
+    /* Booking Confirmation Message */
+    #bookingConfirmation {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: green;
+      text-align: center;
+    }
+
+    #bookingConfirmation.error {
+      color: red;
+    }
+
     /* Footer */
     footer {
         background-color: #1a1a1a;
@@ -182,7 +259,7 @@
     <div class="about-text">
         <h2>Visit Our Salon</h2>
         <div class="accent-line"></div>
-        <p>Monday - Saturday: 9am - 5pm<br>
+        <p>Monday - Saturday: 8am - 5pm<br>
         Sunday: Closed for Private Events</p>
         <p>For inquiries and appointments:<br>
         Tel: 078 155 9552<br>
@@ -196,26 +273,28 @@
 </div>
 </div>
 
-<section id="contactSection">
-    <h1>Book a Personalization Appointment</h1>
-    <form id="bookingForm">
-      <label for="name">Name:</label>
-      <input type="text" id="name" required>
-
-      <label for="contact">Contact Details (Phone/Email):</label>
-      <input type="text" id="contact" required>
-
-      <label for="appointmentDate">Appointment Date:</label>
-      <input type="date" id="appointmentDate" required min="">
-
-      <label for="appointmentTime">Appointment Time:</label>
-      <input type="time" id="appointmentTime" required min="08:00" max="17:00">
-
-      <button type="submit">Book Appointment</button>
-    </form>
-
-    <div id="bookingConfirmation"></div>
-</section>
+<div class="container">
+    <section id="contactSection">
+      <h1>Book a Personalization Appointment</h1>
+      <form id="bookingForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+  
+        <label for="contact">Contact Details (Email):</label>
+        <input type="email" id="contact" required>
+  
+        <label for="appointmentDate">Appointment Date:</label>
+        <input type="date" id="appointmentDate" required min="">
+  
+        <label for="appointmentTime">Appointment Time:</label>
+        <input type="time" id="appointmentTime" required min="08:00" max="17:00">
+  
+        <button type="submit">Book Appointment</button>
+      </form>
+  
+      <div id="bookingConfirmation"></div>
+    </section>
+  </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
