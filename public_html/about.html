@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion E-Commerce</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+      
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+    authDomain: "sonia-emporium-95984.firebaseapp.com",
+    projectId: "sonia-emporium-95984",
+    storageBucket: "sonia-emporium-95984.firebasestorage.app",
+    messagingSenderId: "582010973914",
+    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+    measurementId: "G-72TR5RZVBB"
+  };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      </script>
+
+        <style>
+            body {
+                font-family: 'Montserrat', sans-serif;
+                margin: 0;
+                padding: 0;
+                color: #1a1a1a;
+                line-height: 1.6;
+                background-color: #fdfbf8;
+            }
+            header {
+                background-color: #ffffff;
+                padding: 20px 40px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                position: fixed;
+                width: 100%;
+                top: 0;
+                z-index: 1000;
+                box-sizing: border-box;
+            }
+            .logo h1 {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 28px;
+                margin: 0;
+                letter-spacing: 2px;
+            }
+            nav ul {
+                display: flex;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav ul li a {
+                color: #1a1a1a;
+                text-decoration: none;
+                padding: 10px 20px;
+                font-size: 14px;
+                letter-spacing: 1px;
+                transition: color 0.3s;
+            }
+            nav ul li a:hover {
+                color: #c9a77c;
+            }
+            .cart a {
+                color: #1a1a1a;
+                text-decoration: none;
+                font-size: 14px;
+            }
+             h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+        }
+            .btn {
+                display: inline-block;
+                padding: 15px 40px;
+                background-color: transparent;
+                border: 1px solid white;
+                color: white;
+                text-decoration: none;
+                transition: all 0.3s;
+                font-size: 14px;
+                letter-spacing: 2px;
+            }
+            .btn:hover {
+                background-color: white;
+                color: #1a1a1a;
+            }
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+        .about-text, .about-mission {
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .feature-card {
+            background-color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+        }
+        .accent-line {
+            width: 50px;
+            height: 2px;
+            background-color: #c9a77c;
+            margin: 2rem auto;
+        }
+        .cta-section {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 4rem 0;
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #c9a77c;
+            color: white;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .cta-button:hover {
+            background-color: #b18a5c;
+        }
+        .luxury-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .luxury-detail {
+            text-align: center;
+            padding: 2rem;
+        }
+        .luxury-detail h3 {
+            font-family: 'Cormorant Garamond', serif;
+            margin-bottom: 1rem;
+        }
+            footer {
+                background-color: #1a1a1a;
+                color: white;
+                padding: 60px 40px;
+            }
+            .footer-content {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 40px;
+            }
+            .footer-section h3 {
+                font-family: 'Cormorant Garamond', serif;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+            .footer-section ul {
+                list-style: none;
+                padding: 0;
+            }
+            .footer-section ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 14px;
+                line-height: 2;
+            }
+            .accent-line {
+                width: 40px;
+                height: 1px;
+                background-color: #c9a77c;
+                margin: 20px auto;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <h1>SONIA EMPORIUM</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+                    <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+                </ul>
+            </nav>
+            <div class="cart">
+                <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart </a>
+            </div>
+        </header>
+        
+          <div class="container">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Our Heritage</h2>
+                <div class="accent-line"></div>
+                <p>In the prestigious enclave of Melrose, Sonia Emporium stands as a testament to unparalleled luxury and sartorial excellence. For over a decade, we have curated an exclusive collection of the world's most coveted designer pieces, catering to those who appreciate the artistry of fine fashion.</p>
+                <p>Each garment and accessory in our carefully curated collection tells a story of craftsmanship, quality, and timeless elegance. We pride ourselves on offering not just clothing, but an experience that transcends the ordinary.</p>
+            </div>
+            <div class="about-mission">
+                <h2>Our Philosophy</h2>
+                <div class="accent-line"></div>
+                <p>At Sonia Emporium, we believe that true luxury is an experience that begins the moment you enter our boutique. Our commitment to excellence extends beyond our collection to the personalized service we provide to each client.</p>
+                <p>We understand that our clientele seeks more than mere fashion; they seek an expression of their refined taste and individuality. It is our privilege to help you discover pieces that not only enhance your wardrobe but elevate your personal style.</p>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>Curated Excellence</h3>
+                <div class="accent-line"></div>
+                <p>An exclusive selection of limited-edition pieces from the world's most prestigious fashion houses.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Personal Stylists</h3>
+                <div class="accent-line"></div>
+                <p>Benefit from the expertise of our seasoned fashion consultants in private styling sessions.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Bespoke Experience</h3>
+                <div class="accent-line"></div>
+                <p>Enjoy our invitation-only events and preview upcoming collections before they reach the public.</p>
+            </div>
+        </div>
+
+        <div class="luxury-details">
+            <div class="luxury-detail">
+                <h3>By Appointment</h3>
+                <p>For an enhanced shopping experience, we offer exclusive private appointments. Our boutique can be reserved for your personal shopping pleasure.</p>
+            </div>
+            <div class="luxury-detail">
+                <h3>Artisanal Craftsmanship</h3>
+                <p>Each piece in our collection is selected for its exceptional quality, ensuring that you invest in garments that stand the test of time.</p>
+            </div>
+        </div>
+    </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>Our Heritage</h3>
+                    <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
+                </div>
+            </div>
+        </footer>
+</body>
+</html>

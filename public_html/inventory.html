@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+h2 {
+  color: #333;
+}
+
+div {
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 10px;
+  color: #fff;
+  text-decoration: none;
+  background-color: #444;
+  margin: 5px 0;
+}
+
+.sidebar nav a:hover {
+  background-color: #555;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+          <h2>Admin Dashboard</h2>
+          <p id="admin-email"></p>
+          <nav>
+            <a href="inventory.html">Manage Inventory</a>
+            <a href="bookings.html">Manage Bookings</a>
+            <a href="users.html">Manage Users</a>
+            <a href="sales.html">View Sales</a>
+          </nav>
+          <button id="logout-button" class="logout-button">Logout</button>
+        </aside>
+      </div>
+
+  <h2>Inventory Management</h2>
+  <form id="add-item-form">
+    <input type="text" id="itemName" placeholder="Item Name" required>
+    <input type="number" id="itemPrice" placeholder="Price" required>
+    <input type="text" id="itemCategory" placeholder="Category" required>
+    <button type="submit">Add Item</button>
+  </form>
+  <div id="inventory-list"></div>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+    authDomain: "sonia-emporium-95984.firebaseapp.com",
+    projectId: "sonia-emporium-95984",
+    storageBucket: "sonia-emporium-95984.firebasestorage.app",
+    messagingSenderId: "582010973914",
+    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+    measurementId: "G-72TR5RZVBB"
+  };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+async function loadInventory() {
+  const inventoryList = document.getElementById("inventory-list");
+  inventoryList.innerHTML = "";
+  const snapshot = await getDocs(collection(db, "product"));
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const item = document.createElement("div");
+    item.innerHTML = `
+      <p><strong>${data.name}</strong> - $${data.price}</p>
+      <button onclick="deleteItem('${doc.id}')">Delete</button>
+    `;
+    inventoryList.appendChild(item);
+  });
+}
+
+document.getElementById("add-item-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const itemName = document.getElementById("itemName").value;
+  const itemPrice = parseFloat(document.getElementById("itemPrice").value);
+  const itemCategory = document.getElementById("itemCategory").value;
+  
+  await addDoc(collection(db, "product"), { name: itemName, price: itemPrice, category: itemCategory });
+  loadInventory();
+});
+
+async function deleteItem(itemId) {
+  await deleteDoc(doc(db, "product", itemId));
+  loadInventory();
+}
+
+loadInventory();
+
+  </script>
+</body>
+</html>

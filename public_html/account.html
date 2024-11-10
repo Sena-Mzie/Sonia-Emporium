@@ -6,89 +6,127 @@
   <title>User Profile</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-/* Base Styles */
-body {
-        font-family: 'Montserrat', sans-serif;
-        margin: 0;
-        padding: 0;
-        color: #1a1a1a;
-        line-height: 1.6;
-        background-color: #fdfbf8;
+    /* Base Styles */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f7f7f7;
     }
 
     header {
-        background-color: #ffffff;
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        box-sizing: border-box;
+      background-color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      box-sizing: border-box;
     }
 
     .logo h1 {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 28px;
-        margin: 0;
-        letter-spacing: 2px;
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      margin: 0;
+      letter-spacing: 2px;
     }
 
     nav ul {
-        display: flex;
-        list-style: none;
-        margin: 0;
-        padding: 0;
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     nav ul li a {
-        color: #1a1a1a;
-        text-decoration: none;
-        padding: 10px 20px;
-        font-size: 14px;
-        letter-spacing: 1px;
-        transition: color 0.3s;
+      color: #333;
+      text-decoration: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      transition: color 0.3s;
     }
 
     nav ul li a:hover {
-        color: #c9a77c;
+      color: #8c7c6b;
     }
 
     .cart a {
-        color: #1a1a1a;
-        text-decoration: none;
-        font-size: 14px;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
     }
 
     .btn {
-        display: inline-block;
-        padding: 15px 40px;
-        background-color: transparent;
-        border: 1px solid white;
-        color: white;
-        text-decoration: none;
-        transition: all 0.3s;
-        font-size: 14px;
-        letter-spacing: 2px;
+      display: inline-block;
+      padding: 15px 40px;
+      background-color: #8c7c6b;
+      border: none;
+      color: white;
+      text-decoration: none;
+      transition: background-color 0.3s;
+      font-size: 14px;
+      letter-spacing: 2px;
+      font-weight: 500;
+      border-radius: 4px;
     }
 
     .btn:hover {
-        background-color: white;
-        color: #1a1a1a;
+      background-color: #6c5d4f;
     }
 
-    
+    /* Profile Section */
+    #profileSection {
+      max-width: 800px;
+      margin: 120px auto 40px;
+      background-color: #fff;
+      padding: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
 
-/* Responsive styling */
-@media (max-width: 600px) {
-  #profileSection {
-    padding: 15px;
-    width: 90%;
-  }
-}
+    #profileSection h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #8c7c6b;
+    }
+
+    #userInfo p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #userInfo p strong {
+      color: #8c7c6b;
+      font-weight: 500;
+    }
+
+    #logoutButton {
+      margin-top: 20px;
+    }
+
+    /* Responsive Styling */
+    @media (max-width: 768px) {
+      #profileSection {
+        margin: 100px auto 20px;
+        padding: 30px;
+      }
+
+      #profileSection h1 {
+        font-size: 28px;
+      }
+
+      #userInfo p {
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -107,6 +145,10 @@ body {
         </nav>
     </header>
     
+    <br> 
+
+    <br>
+
   <!-- Profile Section -->
   <section id="profileSection">
     <h1>Your Account</h1>
