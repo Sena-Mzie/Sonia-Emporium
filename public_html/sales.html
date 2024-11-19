@@ -7,124 +7,173 @@
   <link rel="stylesheet" href="style.css">
   <style>
     body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
 
-h2 {
-  color: #333;
-}
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
 
-div {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
+    .sidebar {
+      width: 250px;
+      background-color: #343a40;
+      color: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
 
-button {
-  padding: 5px 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
+    .sidebar h2 {
+      color: #ffc107;
+      margin-bottom: 20px;
+    }
 
-button:hover {
-  background-color: #0056b3;
-}
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-}
+    .sidebar nav a {
+      display: block;
+      padding: 10px 15px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #495057;
+      margin: 10px 0;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
 
-.sidebar nav a {
-  display: block;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  background-color: #444;
-  margin: 5px 0;
-}
+    .sidebar nav a:hover {
+      background-color: #6c757d;
+    }
 
-.sidebar nav a:hover {
-  background-color: #555;
-}
+    .logout-button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
 
-.logout-button {
-  background-color: #f44336;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
+    .logout-button:hover {
+      background-color: #c82333;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px;
+      background-color: #fff;
+    }
+
+    h2 {
+      color: #343a40;
+      border-bottom: 2px solid #ffc107;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    #sales-summary {
+      background-color: #f1f1f1;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #sales-summary p {
+      margin: 10px 0;
+      font-size: 16px;
+      color: #495057;
+    }
+
+    #sales-summary p strong {
+      color: #343a40;
+    }
   </style>
 </head>
-<body> 
-    <div class="dashboard-container">
-        <aside class="sidebar">
-          <h2>Admin Dashboard</h2>
-          <p id="admin-email"></p>
-          <nav>
-            <a href="inventory.html">Manage Inventory</a>
-            <a href="bookings.html">Manage Bookings</a>
-            <a href="users.html">Manage Users</a>
-            <a href="sales.html">View Sales</a>
-          </nav>
-          <button id="logout-button" class="logout-button">Logout</button>
-        </aside>
-      </div>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Admin Dashboard</h2>
+      <p id="admin-email">admin@example.com</p>
+      <nav>
+        <a href="inventory.html">Manage Inventory</a>
+        <a href="bookings.html">Manage Bookings</a>
+        <a href="users.html">Manage Users</a>
+        <a href="sales.html">View Sales</a>
+      </nav>
+      <button id="logout-button" class="logout-button">Logout</button>
+    </aside>
 
-  <h2>Sales Data</h2>
-  <div id="sales-summary">
-    <p><strong>Total Sales:</strong> <span id="total-sales"></span></p>
-    <p><strong>Total Items Sold:</strong> <span id="total-items"></span></p>
-    <p><strong>Total Revenue:</strong> R<span id="total-revenue"></span></p>
+    <!-- Main Content -->
+    <main>
+      <h2>Sales Data</h2>
+      <div id="sales-summary">
+        <p><strong>Total Sales:</strong> <span id="total-sales">0</span></p>
+        <p><strong>Total Items Sold:</strong> <span id="total-items">0</span></p>
+        <p><strong>Total Revenue:</strong> R<span id="total-revenue">0.00</span></p>
+      </div>
+    </main>
   </div>
 
-  <script type="module" src="sales.js">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
 
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-    authDomain: "sonia-emporium-95984.firebaseapp.com",
-    projectId: "sonia-emporium-95984",
-    storageBucket: "sonia-emporium-95984.firebasestorage.app",
-    messagingSenderId: "582010973914",
-    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-    measurementId: "G-72TR5RZVBB"
-  };
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-async function loadSalesData() {
-  const salesSnapshot = await getDocs(collection(db, "checkout"));
-  let totalSales = 0;
-  let totalItems = 0;
-  let totalRevenue = 0;
+    // Load sales data
+    async function loadSalesData() {
+      try {
+        const salesSnapshot = await getDocs(collection(db, "checkout"));
+        let totalSales = 0;
+        let totalItems = 0;
+        let totalRevenue = 0;
 
-  salesSnapshot.forEach((doc) => {
-    const sale = doc.data();
-    totalSales += 1;
-    totalItems += sale.items.length;
-    totalRevenue += sale.totalPrice;
-  });
+        salesSnapshot.forEach((doc) => {
+          const sale = doc.data();
+          totalSales += 1;
+          totalItems += sale.items.reduce((sum, item) => sum + item.quantity, 0);
+          totalRevenue += sale.totalPrice;
+        });
 
-  document.getElementById("total-sales").textContent = totalSales;
-  document.getElementById("total-items").textContent = totalItems;
-  document.getElementById("total-revenue").textContent = totalRevenue.toFixed(2);
-}
+        document.getElementById("total-sales").textContent = totalSales;
+        document.getElementById("total-items").textContent = totalItems;
+        document.getElementById("total-revenue").textContent = totalRevenue.toFixed(2);
+      } catch (error) {
+        console.error("Error loading sales data:", error);
+      }
+    }
 
-loadSalesData();
+    loadSalesData();
+
+    // Logout functionality
+    const logoutButton = document.getElementById("logout-button");
+    logoutButton.addEventListener("click", () => {
+      signOut(auth)
+        .then(() => {
+          alert("You have successfully logged out.");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          console.error("Error during logout:", error);
+        });
+    });
   </script>
 </body>
 </html>
+

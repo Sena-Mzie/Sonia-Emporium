@@ -313,13 +313,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const bookingForm = document.getElementById("bookingForm");
-const bookingConfirmation = document.getElementById("bookingConfirmation");
-
-// Set the minimum date to today
-const today = new Date().toISOString().split("T")[0];
-document.getElementById("appointmentDate").setAttribute("min", today);
-
 bookingForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -330,6 +323,17 @@ bookingForm.addEventListener("submit", async (e) => {
 
   if (!name || !contact || !appointmentDate || !appointmentTime) {
     bookingConfirmation.textContent = "Please complete all fields.";
+    bookingConfirmation.style.color = "red";
+    return;
+  }
+
+  // Combine date and time for the appointment
+  const selectedDateTime = new Date(`${appointmentDate}T${appointmentTime}`);
+  const currentDateTime = new Date();
+
+  // Check if the selected appointment is in the past
+  if (selectedDateTime <= currentDateTime) {
+    bookingConfirmation.textContent = "You cannot book an appointment for a past date or time.";
     bookingConfirmation.style.color = "red";
     return;
   }

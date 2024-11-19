@@ -85,28 +85,58 @@
         #productName { font-size: 24px; }
         nav ul li a { padding: 8px 10px; font-size: 13px; }
     }
+
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 60px 40px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+    }
+
   </style>
 </head>
 <body>
-
   <!--HEADER-->
   <header>
     <h1>SONIA EMPORIUM</h1>
     <nav>
-        <ul>
-            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
-            <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
-            <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
-        </ul>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="shop.html"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+        <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+        <li><a href="contact.html"><i class="fas fa-phone"></i> Contact</a></li>
+        <li><a href="account.html"><i class="fas fa-user"></i> My Account</a></li>
+      </ul>
     </nav>
-</header>
+  </header>
 
   <!-- Product Details Section -->
   <section id="productDetails">
     <div class="product-image centered">
-      <img id="productImage" alt="Product Image">
+      <img id="productImage" alt="Product Image" />
     </div>
     <div class="product-info centered">
       <h1 id="productName"></h1>
@@ -114,9 +144,7 @@
       <p id="productPrice"></p>
       <div id="productSizes">
         <label for="sizeSelector">Choose Size:</label>
-        <select id="sizeSelector">
-          <!-- Sizes will be populated here -->
-        </select>
+        <select id="sizeSelector"></select>
       </div>
       <button id="addToCart">Add to Cart</button>
       <button id="goToCart">Go to Cart</button>
@@ -124,135 +152,158 @@
     </div>
   </section>
 
+  <!-- Recommended Products Section -->
   <section id="recommendedProducts">
     <h2>Recommended Products</h2>
     <div id="recommendationsGrid"></div>
   </section>
-  
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section about">
+        <h3>Our Heritage</h3>
+        <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
+      </div>
+      <div class="footer-section contact">
+        <h3>Connect With Us</h3>
+        <p>Tel: +27 21 123 4567</p>
+        <p>Email: clientservices@soniaemporium.com</p>
+        <p>By Appointment Only</p>
+      </div>
+    </div>
+  </footer>
+
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-  import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
-  
-  // Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-    authDomain: "sonia-emporium-95984.firebaseapp.com",
-    projectId: "sonia-emporium-95984",
-    storageBucket: "sonia-emporium-95984.firebasestorage.app",
-    messagingSenderId: "582010973914",
-    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-    measurementId: "G-72TR5RZVBB"
-  };
-  
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  
-  // Retrieve Product ID from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get('id');
-  
-  // Elements for displaying product details
-  const productNameElem = document.getElementById('productName');
-  const productDescriptionElem = document.getElementById('productDescription');
-  const productPriceElem = document.getElementById('productPrice');
-  const sizeSelectorElem = document.getElementById('sizeSelector');
-  const productImageElem = document.getElementById('productImage');
-  
-  // Load Product Details
-  async function loadProductDetails() {
-    try {
-      const productRef = doc(db, "product", productId);
-      const productSnapshot = await getDoc(productRef);
-  
-      if (productSnapshot.exists()) {
-        const productData = productSnapshot.data();
-  
-        // Populate the product details
-        productNameElem.textContent = productData.name;
-        productDescriptionElem.textContent = productData.description;
-        productPriceElem.textContent = `R${productData.price}`;
-        productImageElem.src = productData.image || "default-image.jpg";
-  
-        // Populate sizes in dropdown
-        productData.size.forEach(size => {
-          const option = document.createElement("option");
-          option.value = size;
-          option.textContent = size;
-          sizeSelectorElem.appendChild(option);
-        });
-  
-        // Load recommended products based on category
-        loadRecommendedProducts(productData.category);
-      } else {
-        console.error("Product not found!");
-      }
-    } catch (error) {
-      console.error("Error loading product details:", error);
-    }
-  }
-  
-  // Function to load recommended products based on category
-  async function loadRecommendedProducts(category) {
-    try {
-      const recommendationsGrid = document.getElementById('recommendationsGrid');
-      const q = query(collection(db, "product"), where("category", "==", category));
-      const querySnapshot = await getDocs(q);
-  
-      querySnapshot.forEach((doc) => {
-        const product = doc.data();
-  
-        // Exclude the currently viewed product
-        if (doc.id !== productId) {
-          const productCard = document.createElement('div');
-          productCard.classList.add('product-card');
-          productCard.onclick = () => window.location.href = `product.html?id=${doc.id}`;
-  
-          productCard.innerHTML = `
-            <img src="${product.image || "default-image.jpg"}" alt="${product.name}">
-            <h4>${product.name}</h4>
-            <p>R${product.price}</p>
-          `;
-          recommendationsGrid.appendChild(productCard);
-        }
-      });
-    } catch (error) {
-      console.error("Error loading recommended products:", error);
-    }
-  } 
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getFirestore, doc, getDoc, collection, query, where, getDocs, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
 
-  // Add Product to Cart
-document.getElementById('addToCart').addEventListener('click', async () => {
-  const selectedSize = sizeSelectorElem.value;
-
-  if (!selectedSize) {
-    alert("Please select a size.");
-    return;
-  }
-
-  try {
-    const cartItem = {
-      productId: productId,
-      name: productNameElem.textContent,
-      price: parseFloat(productPriceElem.textContent.replace("R", "")),
-      size: selectedSize,
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+      authDomain: "sonia-emporium-95984.firebaseapp.com",
+      projectId: "sonia-emporium-95984",
+      storageBucket: "sonia-emporium-95984.firebasestorage.app",
+      messagingSenderId: "582010973914",
+      appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+      measurementId: "G-72TR5RZVBB",
     };
 
-    // Store the cart item in the "cart summary" collection
-    await addDoc(collection(db, "cart item"), cartItem);
-    alert("Product added to cart!");
-  } catch (error) {
-    console.error("Error adding product to cart:", error);
-  }
-});
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-  
-  // Button Navigation
-  document.getElementById('goToCart').onclick = () => window.location.href = 'cart.html';
-  document.getElementById('returnToShop').onclick = () => window.location.href = 'shop.html';
-  
-  // Load the product details on page load
-  loadProductDetails();
-  
+    // Retrieve Product ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get("id");
+
+    // DOM Elements
+    const productNameElem = document.getElementById("productName");
+    const productDescriptionElem = document.getElementById("productDescription");
+    const productPriceElem = document.getElementById("productPrice");
+    const sizeSelectorElem = document.getElementById("sizeSelector");
+    const productImageElem = document.getElementById("productImage");
+
+    // Load Product Details
+    async function loadProductDetails() {
+      try {
+        const productRef = doc(db, "product", productId);
+        const productSnapshot = await getDoc(productRef);
+
+        if (productSnapshot.exists()) {
+          const productData = productSnapshot.data();
+          productNameElem.textContent = productData.name;
+          productDescriptionElem.textContent = productData.description;
+          productPriceElem.textContent = `R${productData.price}`;
+          productImageElem.src = productData.image || "default-image.jpg";
+
+          productData.size.forEach((size) => {
+            const option = document.createElement("option");
+            option.value = size;
+            option.textContent = size;
+            sizeSelectorElem.appendChild(option);
+          });
+
+          await loadRecommendedProducts(productData.category);
+        } else {
+          console.error("Product not found!");
+        }
+      } catch (error) {
+        console.error("Error loading product details:", error);
+      }
+    }
+
+    // Load Recommended Products
+    async function loadRecommendedProducts(category) {
+      try {
+        const recommendationsGrid = document.getElementById("recommendationsGrid");
+        const q = query(collection(db, "product"), where("category", "==", category));
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          const product = doc.data();
+          if (doc.id !== productId) {
+            const productCard = document.createElement("div");
+            productCard.classList.add("product-card");
+            productCard.onclick = () => (window.location.href = `product.html?id=${doc.id}`);
+            productCard.innerHTML = `
+              <img src="${product.image || "default-image.jpg"}" alt="${product.name}">
+              <h4>${product.name}</h4>
+              <p>R${product.price}</p>
+            `;
+            recommendationsGrid.appendChild(productCard);
+          }
+        });
+      } catch (error) {
+        console.error("Error loading recommended products:", error);
+      }
+    }
+
+    // Add Product to Cart
+    document.getElementById("addToCart").addEventListener("click", async () => {
+      const selectedSize = sizeSelectorElem.value;
+
+      if (!selectedSize) {
+        alert("Please select a size.");
+        return;
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          alert("You must be logged in to add items to your cart.");
+          return;
+        }
+
+        const cartRef = doc(db, "total items in cart", user.uid);
+        const cartSnapshot = await getDoc(cartRef);
+
+        const cartItem = {
+          productId,
+          name: productNameElem.textContent,
+          price: parseFloat(productPriceElem.textContent.replace("R", "")),
+          size: selectedSize,
+          quantity: 1,
+        };
+
+        if (cartSnapshot.exists()) {
+          const existingProducts = cartSnapshot.data().product || [];
+          existingProducts.push(cartItem);
+          await updateDoc(cartRef, { product: existingProducts });
+        } else {
+          await setDoc(cartRef, { product: [cartItem] });
+        }
+
+        alert("Product added to cart!");
+      });
+    });
+
+    // Button Navigation
+    document.getElementById("goToCart").onclick = () => (window.location.href = "cart.html");
+    document.getElementById("returnToShop").onclick = () => (window.location.href = "shop.html");
+
+    // Initialize Page
+    loadProductDetails();
   </script>
 </body>
 </html>

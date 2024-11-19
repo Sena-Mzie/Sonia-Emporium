@@ -127,6 +127,37 @@
         font-size: 16px;
       }
     }
+
+    footer {
+      background-color: #1a1a1a;
+      color: white;
+      padding: 60px 40px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 2;
+    }
+
   </style>
 </head>
 <body>
@@ -158,6 +189,21 @@
     </div>
     <button id="logoutButton">Logout</button>
   </section>
+
+  <footer>
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h3>Our Heritage</h3>
+            <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
+        </div>
+        <div class="footer-section contact">
+            <h3>Connect With Us</h3>
+            <p>Tel: +27 21 123 4567</p>
+            <p>Email: clientservices@soniaemporium.com</p>
+            <p>By Appointment Only</p>
+        </div>
+    </div>
+</footer>
 
   <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";

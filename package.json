@@ -1,8 +1,17 @@
 {
     "name": "Sonia2",
     "version": "1.0.0",
-    "keywords": ["util", "functional", "server", "client", "browser"],
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
     "author": "Zota",
     "contributors": [],
-    "dependencies": {}
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "jsdom": "^25.0.1"
+    }
 }

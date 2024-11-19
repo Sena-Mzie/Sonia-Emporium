@@ -229,58 +229,50 @@
       <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
     </div>
   </header>
-
   <div class="checkout-container">
     <section class="checkout-form">
       <h2>Checkout</h2>
       <form id="checkout-form">
-        <!-- Form fields -->
+        <!-- Form Fields -->
         <label for="fullname">Full Name</label>
         <input type="text" id="fullname" name="fullname" required>
-
+  
         <label for="address">Address</label>
         <input type="text" id="address" name="address" required>
-
+  
         <label for="city">City</label>
         <input type="text" id="city" name="city" required>
-
+  
         <label for="country">Country</label>
         <input type="text" id="country" name="country" required>
-
+  
         <label for="postal-code">Postal Code</label>
         <input type="text" id="postal-code" name="postal-code" required>
-
+  
         <label for="delivery-notes">Delivery Notes</label>
         <textarea id="delivery-notes" name="delivery-notes"></textarea>
-
+  
         <label for="card-number">Card Number</label>
         <input type="text" id="card-number" name="card-number" placeholder="1111-2222-3333-4444" required>
-
+  
         <label for="card-expiration">Expiration Date</label>
         <input type="text" id="card-expiration" name="card-expiration" placeholder="MM/YY" required>
-
+  
         <label for="card-cvv">CVV</label>
         <input type="text" id="card-cvv" name="card-cvv" placeholder="123" required>
-
+  
         <button type="submit">Complete Purchase</button>
-    </form>
-</section>
-
       </form>
     </section>
-
-  <!-- Order Summary Section -->
-  <section class="order-summary">
-    <h2>Order Summary</h2>
-    <p id="totalItems">Total Items: 0</p>
-    <p id="totalPrice">Total Price: R0.00</p>
-    <button id="backToCartButton">Return to Cart</button>
-    <br>
-    <br>
-    <button id="confirmOrderButton">Confirm Order</button>
-  </section>
-</div>
-
+  
+    <!-- Order Summary Section -->
+    <section class="order-summary">
+      <h2>Order Summary</h2>
+      <p id="totalItems">Total Items: 0</p>
+      <p id="totalPrice">Total Price: R0.00</p>
+      <button id="backToCartButton">Return to Cart</button>
+    </section>
+  
     <!-- Purchase Successful Modal -->
     <div id="success-modal" class="modal">
       <div class="modal-content">
@@ -289,123 +281,120 @@
         <button id="close-modal">Close</button>
       </div>
     </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section about">
-                <h3>Our Heritage</h3>
-                <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
-            </div>
-            <div class="footer-section contact">
-                <h3>Connect With Us</h3>
-                <p>Tel: +27 21 123 4567</p>
-                <p>Email: clientservices@soniaemporium.com</p>
-                <p>By Appointment Only</p>
-            </div>
-        </div>
-    </footer>
-
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-      import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
-      import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
-    
-      const firebaseConfig = {
-        apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
-        authDomain: "sonia-emporium-95984.firebaseapp.com",
-        projectId: "sonia-emporium-95984",
-        messagingSenderId: "582010973914",
-        appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
-        measurementId: "G-72TR5RZVBB"
-      };
-    
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
-    
-      // Elements
-      const totalItemsElem = document.getElementById("totalItems");
-      const totalPriceElem = document.getElementById("totalPrice");
-      const checkoutForm = document.getElementById("checkoutForm");
-      const confirmOrderButton = document.getElementById("confirmOrderButton");
-      const backToCartButton = document.getElementById("backToCartButton");
-    
-      let totalItems = 0;
-      let totalPrice = 0;
-    
-      // Ensure User is Logged In and Cart is Not Empty
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          alert("Please log in to access the checkout page.");
-          window.location.href = "login.html"; // Redirect to login page if not logged in
-        } else {
-          loadCartSummary();
-        }
-      });
-    
-      // Load Cart Summary
-      async function loadCartSummary() {
-        const cartItems = [];
-        const querySnapshot = await getDocs(collection(db, "cart"));
-    
-        querySnapshot.forEach((doc) => {
-          const item = doc.data();
-          cartItems.push(item);
-          totalItems += item.quantity || 1;
-          totalPrice += item.price * (item.quantity || 1);
-        });
-    
-        if (cartItems.length === 0) {
-          alert("Your cart is empty. Redirecting to the cart page.");
-          window.location.href = "cart.html";
-        } else {
-          updateSummary();
-        }
-      }
-    
-      // Update Order Summary
-      function updateSummary() {
-        totalItemsElem.textContent = `Total Items: ${totalItems}`;
-        totalPriceElem.textContent = `Total Price: R${(totalPrice * 1.1).toFixed(2)}`; // 10% delivery fee included
-      }
-    
-      // Handle Confirm Order
-      confirmOrderButton.addEventListener("click", async () => {
-        const formData = {
-          fullname: checkoutForm.fullname.value,
-          email: checkoutForm.email.value,
-          address: checkoutForm.address.value,
-          city: checkoutForm.city.value,
-          postalCode: checkoutForm.postalCode.value,
-          notes: checkoutForm.notes.value || "",
-          paymentMethod: checkoutForm.paymentMethod.value,
-          totalItems: totalItems,
-          totalPrice: (totalPrice * 1.1).toFixed(2) // Including 10% delivery fee
-        };
-    
-        // Validate Required Fields
-        if (!formData.fullname || !formData.email || !formData.address || !formData.city || !formData.postalCode || !formData.paymentMethod) {
-          alert("Please fill in all required fields.");
-          return;
-        }
-    
-        try {
-          // Save Order Data to Firestore
-          await addDoc(collection(db, "checkout"), formData);
-          alert("Order confirmed! Thank you for your purchase.");
-          window.location.href = "order-confirmation.html"; // Redirect to confirmation page
-        } catch (error) {
-          console.error("Error adding document: ", error);
-          alert("There was an issue with your order. Please try again.");
-        }
-      });
-    
-      // Return to Cart
-      backToCartButton.addEventListener("click", () => {
-        window.location.href = "cart.html";
-      });
-    </script>
-    
+  </div>
   
-</body>
-</html>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getFirestore, collection, getDoc, doc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+  
+    const firebaseConfig = {
+    apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
+    authDomain: "sonia-emporium-95984.firebaseapp.com",
+    projectId: "sonia-emporium-95984",
+    messagingSenderId: "582010973914",
+    appId: "1:582010973914:web:3bbcc21cef1d15a997ffe3",
+    measurementId: "G-72TR5RZVBB",
+  };
+  
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+  
+    const totalItemsElem = document.getElementById("totalItems");
+    const totalPriceElem = document.getElementById("totalPrice");
+    const checkoutForm = document.getElementById("checkout-form");
+    const successModal = document.getElementById("success-modal");
+    const closeModalButton = document.getElementById("close-modal");
+    const backToCartButton = document.getElementById("backToCartButton");
+  
+    let totalItems = 0;
+    let totalPrice = 0;
+  
+    // Load Cart Data
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        alert("Please log in to continue.");
+        window.location.href = "account.html";
+      } else {
+        await loadCartData(user.uid);
+      }
+    });
+  
+    async function loadCartData(userId) {
+      try {
+        const cartDoc = await getDoc(doc(db, "total items in cart", userId));
+        if (cartDoc.exists()) {
+          const cartData = cartDoc.data().product || [];
+          totalItems = cartData.reduce((sum, item) => sum + (item.quantity || 1), 0);
+          totalPrice = cartData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+        updateSummary();
+      } catch (error) {
+        console.error("Error loading cart data:", error);
+        alert("Failed to load cart data.");
+      }
+    }
+  
+    function updateSummary() {
+      totalItemsElem.textContent = `Total Items: ${totalItems}`;
+      totalPriceElem.textContent = `Total Price: R${totalPrice.toFixed(2)}`;
+    }
+  
+    // Form Submission
+    checkoutForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+  
+      const formData = {
+        fullname: checkoutForm.fullname.value.trim(),
+        address: checkoutForm.address.value.trim(),
+        city: checkoutForm.city.value.trim(),
+        country: checkoutForm.country.value.trim(),
+        postalCode: checkoutForm["postal-code"].value.trim(),
+        deliveryNotes: checkoutForm["delivery-notes"].value.trim() || "",
+        totalItems: totalItems,
+        totalPrice: (totalPrice * 1.1).toFixed(2), // Including 10% delivery fee
+        orderDate: new Date().toISOString(),
+      };
+  
+      if (
+        !formData.fullname ||
+        !formData.address ||
+        !formData.city ||
+        !formData.country ||
+        !formData.postalCode
+      ) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+  
+      try {
+        const user = auth.currentUser;
+        if (!user) throw new Error("User not authenticated");
+  
+        // Save order to Firestore
+        await addDoc(collection(db, "orders"), {
+          ...formData,
+          userId: user.uid,
+        });
+  
+        // Clear the cart
+        await deleteDoc(doc(db, "total items in cart", user.uid));
+  
+        successModal.style.display = "block";
+      } catch (error) {
+        console.error("Error confirming order:", error);
+        alert("Failed to complete purchase. Please try again.");
+      }
+    });
+  
+    closeModalButton.addEventListener("click", () => {
+      successModal.style.display = "none";
+      window.location.href = "index.html";
+    });
+  
+    backToCartButton.addEventListener("click", () => {
+      window.location.href = "cart.html";
+    });
+  </script>
+  

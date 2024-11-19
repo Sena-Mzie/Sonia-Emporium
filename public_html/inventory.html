@@ -6,95 +6,190 @@
   <title>Inventory Management</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* General Styling */
     body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-}
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
 
-h2 {
-  color: #333;
-}
+    h2 {
+      color: #555;
+      margin: 20px;
+    }
 
-div {
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
+    .dashboard-container {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-button {
-  padding: 5px 10px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
+    /* Sidebar Styling */
+    .sidebar {
+      width: 250px;
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
 
-button:hover {
-  background-color: #0056b3;
-}
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-}
+    .sidebar h2 {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
 
-.sidebar nav a {
-  display: block;
-  padding: 10px;
-  color: #fff;
-  text-decoration: none;
-  background-color: #444;
-  margin: 5px 0;
-}
+    .sidebar p {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
 
-.sidebar nav a:hover {
-  background-color: #555;
-}
+    .sidebar nav a {
+      display: block;
+      padding: 10px 15px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #444;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
 
-.logout-button {
-  background-color: #f44336;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
+    .sidebar nav a:hover {
+      background-color: #555;
+    }
 
+    .logout-button {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .logout-button:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Main Content Styling */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    form input, form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    form button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Inventory List Styling */
+    #inventory-list {
+      margin-top: 20px;
+    }
+
+    .inventory-item {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .inventory-item p {
+      margin: 0;
+    }
+
+    .inventory-item button {
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .inventory-item button:hover {
+      background-color: #d32f2f;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        position: relative;
+      }
+
+      .main-content {
+        padding: 10px;
+      }
+    }
   </style>
 </head>
 <body>
-    <div class="dashboard-container">
-        <aside class="sidebar">
-          <h2>Admin Dashboard</h2>
-          <p id="admin-email"></p>
-          <nav>
-            <a href="inventory.html">Manage Inventory</a>
-            <a href="bookings.html">Manage Bookings</a>
-            <a href="users.html">Manage Users</a>
-            <a href="sales.html">View Sales</a>
-          </nav>
-          <button id="logout-button" class="logout-button">Logout</button>
-        </aside>
-      </div>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <h2>Admin Dashboard</h2>
+      <p id="admin-email">Welcome, Admin</p>
+      <nav>
+        <a href="inventory.html">Manage Inventory</a>
+        <a href="bookings.html">Manage Bookings</a>
+        <a href="users.html">Manage Users</a>
+        <a href="sales.html">View Sales</a>
+      </nav>
+      <button id="logout-button" class="logout-button">Logout</button>
+    </aside>
 
-  <h2>Inventory Management</h2>
-  <form id="add-item-form">
-    <input type="text" id="itemName" placeholder="Item Name" required>
-    <input type="number" id="itemPrice" placeholder="Price" required>
-    <input type="text" id="itemCategory" placeholder="Category" required>
-    <button type="submit">Add Item</button>
-  </form>
-  <div id="inventory-list"></div>
+    <div class="main-content">
+      <h2>Inventory Management</h2>
+      <form id="add-item-form">
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <input type="number" id="itemPrice" placeholder="Price" required>
+        <input type="text" id="itemCategory" placeholder="Category" required>
+        <button type="submit">Add Item</button>
+      </form>
+
+      <div id="inventory-list"></div>
+    </div>
+  </div>
 
   <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-auth.js";
+    import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-firestore.js";
 
-// Firebase configuration
-const firebaseConfig = {
+    // Firebase configuration
+    const firebaseConfig = {
     apiKey: "AIzaSyCTRQ7Jwg8ro4fGbNpRgY5Xri8KBUju_Cw",
     authDomain: "sonia-emporium-95984.firebaseapp.com",
     projectId: "sonia-emporium-95984",
@@ -104,43 +199,42 @@ const firebaseConfig = {
     measurementId: "G-72TR5RZVBB"
   };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-async function loadInventory() {
-  const inventoryList = document.getElementById("inventory-list");
-  inventoryList.innerHTML = "";
-  const snapshot = await getDocs(collection(db, "product"));
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const item = document.createElement("div");
-    item.innerHTML = `
-      <p><strong>${data.name}</strong> - $${data.price}</p>
-      <button onclick="deleteItem('${doc.id}')">Delete</button>
-    `;
-    inventoryList.appendChild(item);
-  });
-}
+    async function loadInventory() {
+      const inventoryList = document.getElementById("inventory-list");
+      inventoryList.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "product"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const item = document.createElement("div");
+        item.classList.add("inventory-item");
+        item.innerHTML = `
+          <p><strong>${data.name}</strong> - R${data.price.toFixed(2)}</p>
+          <button onclick="deleteItem('${doc.id}')">Delete</button>
+        `;
+        inventoryList.appendChild(item);
+      });
+    }
 
-document.getElementById("add-item-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const itemName = document.getElementById("itemName").value;
-  const itemPrice = parseFloat(document.getElementById("itemPrice").value);
-  const itemCategory = document.getElementById("itemCategory").value;
-  
-  await addDoc(collection(db, "product"), { name: itemName, price: itemPrice, category: itemCategory });
-  loadInventory();
-});
+    document.getElementById("add-item-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const itemName = document.getElementById("itemName").value;
+      const itemPrice = parseFloat(document.getElementById("itemPrice").value);
+      const itemCategory = document.getElementById("itemCategory").value;
+      await addDoc(collection(db, "product"), { name: itemName, price: itemPrice, category: itemCategory });
+      loadInventory();
+    });
 
-async function deleteItem(itemId) {
-  await deleteDoc(doc(db, "product", itemId));
-  loadInventory();
-}
+    async function deleteItem(itemId) {
+      await deleteDoc(doc(db, "product", itemId));
+      loadInventory();
+    }
 
-loadInventory();
-
+    loadInventory();
   </script>
 </body>
 </html>
