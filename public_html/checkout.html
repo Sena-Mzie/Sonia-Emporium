@@ -212,6 +212,7 @@
   </style>
 </head>
 <body>
+  <!--HEADER-->
   <header>
     <div class="logo">
       <h1>SONIA EMPORIUM</h1>
@@ -229,6 +230,8 @@
       <a href="cart.html"><i class="fas fa-shopping-cart"></i> Cart</a>
     </div>
   </header>
+
+  <!--CHECKOUT FORM-->
   <div class="checkout-container">
     <section class="checkout-form">
       <h2>Checkout</h2>
@@ -353,7 +356,7 @@
         postalCode: checkoutForm["postal-code"].value.trim(),
         deliveryNotes: checkoutForm["delivery-notes"].value.trim() || "",
         totalItems: totalItems,
-        totalPrice: (totalPrice * 1.1).toFixed(2), // Including 10% delivery fee
+        totalPrice: (totalPrice * 1.1).toFixed(2),
         orderDate: new Date().toISOString(),
       };
   
@@ -397,4 +400,5 @@
       window.location.href = "cart.html";
     });
   </script>
-  
+  </body>
+  </html>

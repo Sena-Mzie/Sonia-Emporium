@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Profile</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
     /* Base Styles */
     body {
@@ -175,10 +174,6 @@
             </ul>
         </nav>
     </header>
-    
-    <br> 
-
-    <br>
 
   <!-- Profile Section -->
   <section id="profileSection">
@@ -195,12 +190,6 @@
         <div class="footer-section about">
             <h3>Our Heritage</h3>
             <p>Since our founding, Sonia Emporium has been synonymous with unparalleled luxury and sophistication in fashion.</p>
-        </div>
-        <div class="footer-section contact">
-            <h3>Connect With Us</h3>
-            <p>Tel: +27 21 123 4567</p>
-            <p>Email: clientservices@soniaemporium.com</p>
-            <p>By Appointment Only</p>
         </div>
     </div>
 </footer>
@@ -223,7 +212,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// HTML Elements
+// Elements
 const userNameElem = document.getElementById("userName");
 const userEmailElem = document.getElementById("userEmail");
 const logoutButton = document.getElementById("logoutButton");
@@ -232,7 +221,7 @@ const logoutButton = document.getElementById("logoutButton");
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
     alert("Please log in to view your account.");
-    window.location.href = "login.html"; // Redirect to login if not logged in
+    window.location.href = "login.html"; // To Redirect to login if not logged in
   } else {
     const userDoc = await getDoc(doc(db, "users", user.uid));
     if (userDoc.exists()) {
